@@ -7,19 +7,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tb_vacina")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+@NoArgsConstructor
+public class Vacina {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-    private String nome;
-    private String cpf;
-    private String matricula;
-    private String senha;
-    private Boolean is_admin;
-
+    private long id;
+    private String lote;
+    private int quantidade;
+    private long idTipo;
+    private String dataVencimento;
+    private long idFornecedor;
 }

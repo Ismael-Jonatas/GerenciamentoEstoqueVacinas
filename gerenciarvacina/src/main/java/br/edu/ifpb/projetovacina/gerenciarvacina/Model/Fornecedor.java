@@ -1,5 +1,6 @@
 package br.edu.ifpb.projetovacina.gerenciarvacina.Model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,19 +8,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tb_fornecedor")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+@NoArgsConstructor
+public class Fornecedor {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    private long id;
     private String nome;
-    private String cpf;
-    private String matricula;
-    private String senha;
-    private Boolean is_admin;
-
+    private String cnpj;
 }

@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gerenciarvacina:war">
+    <output-path>$PROJECT_DIR$/gerenciarvacina/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>gerenciarvacina</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="gerenciarvacina-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="gerenciarvacina:war exploded" />
+    </root>
+  </artifact>
+</component>
