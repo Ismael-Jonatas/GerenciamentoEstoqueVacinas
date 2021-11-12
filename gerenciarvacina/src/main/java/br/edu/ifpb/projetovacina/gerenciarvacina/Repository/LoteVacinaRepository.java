@@ -1,13 +1,13 @@
 package br.edu.ifpb.projetovacina.gerenciarvacina.Repository;
 
-import br.edu.ifpb.projetovacina.gerenciarvacina.Model.Vacina;
+import br.edu.ifpb.projetovacina.gerenciarvacina.Model.LoteVacina;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+//import org.springframework.data.jpa.repository.Query;
+//
+//import javax.persistence.TypedQuery;
+//import java.util.List;
 
-import javax.persistence.TypedQuery;
-import java.util.List;
-
-public interface VacinaRepository extends JpaRepository<Vacina, Long> {
+public interface LoteVacinaRepository extends JpaRepository<LoteVacina, Long> {
 
 //    @Query("SELECT v FROM Vacina v where v.idTipo= id")
 //    public List<Vacina> findByIdTipoVacina(Long id);
