@@ -20,17 +20,25 @@ public class LoteVacina {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idLote;
+    private Long id;
     //notnull
     @ManyToOne
     @JoinColumn(name = "id_fornecedor")
     private Fornecedor idFornecedor;
-    private int quantidade;
+    private Integer quantidade;
     //notnull
     @ManyToOne
     @JoinColumn(name = "id_tipo")
     private TipoVacina idTipo;
     private Date dataVencimento;
     private String descricao;
+
+    public LoteVacina(Fornecedor fornecedor, Integer quantidade, TipoVacina tipoVacina, Date dataVencimento, String descricao){
+        this.idFornecedor = fornecedor;
+        this.quantidade = quantidade;
+        this.idTipo = tipoVacina;
+        this.dataVencimento = dataVencimento;
+        this.descricao = descricao;
+    }
 
 }

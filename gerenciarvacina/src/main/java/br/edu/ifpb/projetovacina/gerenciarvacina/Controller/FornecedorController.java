@@ -24,7 +24,7 @@ public class FornecedorController {
         return this.fornecedorService.getFornecedorId(idFornecedor);
     }
 
-    @PostMapping("/fornecedores")
+    @PostMapping("/fornecedor")
     public Fornecedor inserirFornecedor(@RequestBody Fornecedor fornecedor){
         return this.fornecedorService.inserirOuAtualizar(fornecedor);
     }

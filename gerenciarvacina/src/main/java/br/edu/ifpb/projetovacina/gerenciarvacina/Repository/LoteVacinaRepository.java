@@ -2,6 +2,10 @@ package br.edu.ifpb.projetovacina.gerenciarvacina.Repository;
 
 import br.edu.ifpb.projetovacina.gerenciarvacina.Model.LoteVacina;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.NoSuchElementException;
 //import org.springframework.data.jpa.repository.Query;
 //
 //import javax.persistence.TypedQuery;

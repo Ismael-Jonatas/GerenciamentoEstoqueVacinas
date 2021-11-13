@@ -18,22 +18,22 @@ public class UsuarioController {
         return this.usuarioService.getUsuarios();
     }
 
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/usuario/{id}")
     public Usuario getUsuariPorId(@PathVariable("id") Long idusuario){
         return this.usuarioService.getUsuarioPorId(idusuario);
     }
 
-    @PostMapping("/usuarios")
+    @PostMapping("/usuario")
     public Usuario inserirUsuario(@RequestBody Usuario usuario){
         return this.usuarioService.inserirOuAtuaizar(usuario);
     }
 
-    @PutMapping("/usuarios/{id}")
+    @PutMapping("/usuario/{id}")
     public Usuario atualizarUsuario(@RequestBody Usuario usuario){
         return this.usuarioService.inserirOuAtuaizar(usuario);
     }
 
-    @DeleteMapping("/usuarios/{id}")
+    @DeleteMapping("/usuario/{id}")
     public void apagarUsuario(@PathVariable("id") Long id){
         this.usuarioService.apagarUsuario(id);
     }

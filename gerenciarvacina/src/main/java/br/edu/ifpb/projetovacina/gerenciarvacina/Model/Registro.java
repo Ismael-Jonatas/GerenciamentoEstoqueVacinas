@@ -19,7 +19,7 @@ public class Registro {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    private Long idRegistro;
+    private Long id;
     private Long idUserEntrada;
     private Date dataEntrada;
     private Date dataSaida;

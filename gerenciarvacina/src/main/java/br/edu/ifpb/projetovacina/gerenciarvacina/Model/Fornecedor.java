@@ -1,6 +1,7 @@
 package br.edu.ifpb.projetovacina.gerenciarvacina.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,11 +23,12 @@ public class Fornecedor {
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long idFornecedor;
+    private Long id;
     //notnull
     private String nome;
     //notnull
     private String cnpj;
     @OneToMany(mappedBy = "idFornecedor")
+    @JsonIgnore
     private List<LoteVacina> loteVacina = new ArrayList<>();
 }

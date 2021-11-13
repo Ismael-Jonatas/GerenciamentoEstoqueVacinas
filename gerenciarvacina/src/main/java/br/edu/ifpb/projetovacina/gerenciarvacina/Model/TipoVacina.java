@@ -1,7 +1,9 @@
 package br.edu.ifpb.projetovacina.gerenciarvacina.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -17,9 +19,11 @@ import java.util.List;
 public class TipoVacina {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private Long id;
     private String nome;
     private String Descricao;
     @OneToMany(mappedBy = "idTipo")
+    @JsonIgnore
     private List<LoteVacina> loteVacina = new ArrayList<>();
 }
