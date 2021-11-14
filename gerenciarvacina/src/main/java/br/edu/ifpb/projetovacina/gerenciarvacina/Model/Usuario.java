@@ -30,6 +30,6 @@ public class Usuario {
     private String matricula;
     //notnull
     private String senha;
-    private Boolean is_admin;
+    private Boolean isAdmin;
 
 }

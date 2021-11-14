@@ -1,0 +1,27 @@
+<div class="div-user">
+  <mat-card class="card-user">
+    <mat-card-title>Cadastrar usuário</mat-card-title>
+    <form action="">
+      <mat-form-field id="inputName">
+        <input matInput placeholder="Nome" [(ngModel)]="usuario.nome" name="nome">
+      </mat-form-field>
+
+      <mat-form-field id="inputCpfCnpj">
+        <input matInput placeholder="CPF"  [(ngModel)]="usuario.cpf" name="cpf">
+      </mat-form-field>
+      <mat-form-field id="inputMatricula">
+        <input matInput placeholder="Matricula"  [(ngModel)]="usuario.matricula" name="matricula">
+      </mat-form-field>
+
+      <mat-form-field id="inputSenha">
+        <input matInput placeholder="Senha"  [(ngModel)]="usuario.senha" name="senha">
+      </mat-form-field>
+
+      <p>ADM <input type="checkbox" id="isAdmin" [(ngModel)]="usuario.isAdmin" name="isadmin"></p>
+
+    </form>
+    <button mat-raised-button (click)="createUser()"  color="primary" >Salvar</button>
+    <button mat-raised-button (click)="cancelCadastro()" >Cancelar</button>
+  </mat-card>
+</div>
+

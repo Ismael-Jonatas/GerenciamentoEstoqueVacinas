@@ -1,0 +1,43 @@
+<mat-sidenav-container class="menu-container">
+  <mat-sidenav class="barra" mode="side" opened>
+    <mat-nav-list class="nav-list">
+      <a mat-list-item routerLink="/login">
+        <i class="material-icons">
+          person
+        </i>
+        Login
+      </a>
+      <a mat-list-item routerLink="/usuario">
+        <i class="material-icons">
+          person_add
+        </i>
+        Usuario
+      </a>
+
+      <a mat-list-item routerLink="/fornecedor">
+        <i class="material-icons">
+          store
+        </i>
+        Fornecedor
+      </a>
+
+      <a mat-list-item routerLink="/vacina">
+        <i class="material-icons">
+          colorize
+        </i>
+        Vacina
+      </a>
+
+      <a mat-list-item routerLink="/lote" >
+        <img class="logo" src="/assets/img/logo.png" alt="logo">
+        Lote
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
