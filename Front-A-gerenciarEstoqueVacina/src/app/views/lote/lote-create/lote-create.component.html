@@ -3,29 +3,29 @@
     <mat-card-title>Cadastrar Lote</mat-card-title>
     <form action="">
       <mat-form-field  id="inputData">
-        <input  matInput placeholder="Data"  name="dataVencimento">
+        <input  matInput placeholder="Data de Vencimento" type="date" value="lotevacina.dataVencimento" name="dataVencimento">
       </mat-form-field>
       <mat-form-field  id="inputDescricao">
-        <input  matInput placeholder="Descrição"  name="dataVencimento">
+        <input  matInput placeholder="Descrição"  [(ngModel)]="lotevacina.descricao" name="descricao">
       </mat-form-field>
       <mat-form-field  id="inputQuantidade">
-        <input  matInput placeholder="Quantidade"  name="dataVencimento">
+        <input  matInput placeholder="Quantidade" [(ngModel)]="lotevacina.quantidade"  name="quantidade">
       </mat-form-field>
     </form>
 
-<!--    <mat-form-field appearance="fill">-->
-<!--      <mat-label>Selecione o Fornecedor</mat-label>-->
-<!--      <mat-select [(ngModel)]="lotevacina.idFornecedor" name="loja">-->
-<!--        <mat-option *ngFor="let fornecedor of fornecedores"  [value]="fornecedor.id">{{fornecedor.nome}}</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
+    <mat-form-field appearance="fill" class="selectfornecedor">
+      <mat-label>Selecione o Fornecedor</mat-label>
+      <mat-select [(ngModel)]="lotevacina.idFornecedor" name="fornecedor">
+        <mat-option *ngFor="let fornecedor of fornecedores"  [value]="fornecedor.id">{{fornecedor.nome}}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-<!--    <mat-form-field appearance="fill">-->
-<!--      <mat-label>Selecione a Vacina</mat-label>-->
-<!--      <mat-select [(ngModel)]="Vacina.idTipoVacina" name="categoria">-->
-<!--        <mat-option *ngFor="let vacina of vacinas"  [value]="vacina.id">{{vacina.nome}}</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
+    <mat-form-field appearance="fill" class="selectvacina">
+      <mat-label>Selecione a Vacina</mat-label>
+      <mat-select [(ngModel)]="lotevacina.idTipoVacina" name="vacina">
+        <mat-option *ngFor="let vacina of vacinas"  [value]="vacina.id">{{vacina.nome}}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
 
     <button mat-raised-button (click)="createLoteVacina()"  color="primary" >Salvar</button>

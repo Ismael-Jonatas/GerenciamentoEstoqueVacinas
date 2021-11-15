@@ -9,7 +9,7 @@ import {Observable} from "rxjs";
   providedIn:'root'
 })
 
-export class fornecedorService{
+export class FornecedorService{
 
     baseUrl = "http://localhost:8080/fornecedor"
 
@@ -26,14 +26,13 @@ export class fornecedorService{
   }
 
   read():Observable<Fornecedor[]>{
-      return this.http.get<Fornecedor[]>(this.baseUrl)
+      const url = `${this.baseUrl}es`
+      return this.http.get<Fornecedor[]>(url)
   }
 
-  readByID(id:string | null):Observable<Fornecedor>{
+  readById(id:string | null):Observable<Fornecedor>{
       const url = `${this.baseUrl}/${id}`
-    return this.http.get<Fornecedor>(url)
+      return this.http.get<Fornecedor>(url)
   }
-
-
 
 }

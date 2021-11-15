@@ -16,7 +16,7 @@ public class LoteVacinaController {
     @Autowired
     private LoteVacinaService loteVacinaService;
 
-    @GetMapping("/loteVacinas")
+    @GetMapping("/lotevacinas")
     public List<LoteVacina> getLoteVacinas(){
         return this.loteVacinaService.getLoteVacinas();
     }

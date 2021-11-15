@@ -25,5 +25,14 @@ export class UsuarioService{
     return this.http.post<Usuario>(this.baseUrl, usuario)
   }
 
+  read():Observable<Usuario[]>{
+    const url = `${this.baseUrl}s`
+    return this.http.get<Usuario[]>(url)
+  }
+
+  readById(id:string | null):Observable<Usuario>{
+    const url = `${this.baseUrl}/${id}}`
+    return this.http.get<Usuario>(url)
+  }
 
 }

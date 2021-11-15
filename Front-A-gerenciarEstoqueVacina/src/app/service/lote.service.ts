@@ -24,4 +24,14 @@ export class LoteService{
     return this.http.post<Lote>(this.baseUrl, lote)
   }
 
+  read():Observable<Lote[]>{
+    const url = `${this.baseUrl}s`
+    return this.http.get<Lote[]>(url)
+  }
+
+  readById(id:string | null):Observable<Lote>{
+    const url = `${this.baseUrl}/${id}`
+    return this.http.get<Lote>(url)
+  }
+
 }
