@@ -30,7 +30,7 @@ export class UsuarioCreateComponent implements OnInit {
   }
 
   cancelCadastro():void{
-    this.router.navigate(['/login'])
+    this.router.navigate(['/gerenciarusuario'])
   }
 
 }

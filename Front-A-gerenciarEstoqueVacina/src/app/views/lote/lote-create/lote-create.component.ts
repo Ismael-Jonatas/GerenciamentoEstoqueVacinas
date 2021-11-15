@@ -39,7 +39,7 @@ export class LoteCreateComponent implements OnInit {
   }
 
   cancelCadastro():void{
-    this.router.navigate(['/lotevacina'])
+    this.router.navigate(['/'])
   }
 
 

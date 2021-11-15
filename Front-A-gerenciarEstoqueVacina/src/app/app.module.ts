@@ -25,6 +25,8 @@ import {VacinaCreateComponent} from "./views/vacina/vacina-create/vacina-create.
 import {LoteCreateComponent} from "./views/lote/lote-create/lote-create.component";
 import {MatSelectModule} from "@angular/material/select";
 import {MatOptionModule} from "@angular/material/core";
+import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
+import { UsuarioComponent } from './components/template/usuario/usuario.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import {MatOptionModule} from "@angular/material/core";
     UsuarioCreateComponent,
     FornecedorCreateComponent,
     VacinaCreateComponent,
-    LoteCreateComponent
+    LoteCreateComponent,
+    UsuarioReadComponent,
+    UsuarioComponent
   ],
   imports: [
     BrowserModule,
