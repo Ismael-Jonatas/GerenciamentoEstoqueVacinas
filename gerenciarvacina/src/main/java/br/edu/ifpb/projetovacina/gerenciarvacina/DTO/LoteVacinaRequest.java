@@ -32,6 +32,8 @@ public class LoteVacinaRequest {
         Optional<TipoVacina> tipoVacina = tipoVacinaRepository.findById(idTipoVacina);
 
         LoteVacina loteVacina = new LoteVacina(fornecedor.get(), quantidade, tipoVacina.get(), dataVencimento, descricao);
+        fornecedor.get().putListLoteVacina(loteVacina);
+        tipoVacina.get().putListLoteVacina(loteVacina);
         return  loteVacina;
     }
 }

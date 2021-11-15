@@ -3,7 +3,6 @@ import {Usuario} from "../../../model/usuario.model";
 import {UsuarioService} from "../../../service/usuario.service";
 import {Router} from "@angular/router";
 
-
 @Component({
   selector: 'app-usuario-create',
   templateUrl: './usuario-create.component.html',
@@ -18,11 +17,9 @@ export class UsuarioCreateComponent implements OnInit {
     senha:'',
     isAdmin:false,
   }
-
   constructor(private usuarioService: UsuarioService, private router: Router) { }
 
   ngOnInit(): void {
-
   }
 
   createUser():void{

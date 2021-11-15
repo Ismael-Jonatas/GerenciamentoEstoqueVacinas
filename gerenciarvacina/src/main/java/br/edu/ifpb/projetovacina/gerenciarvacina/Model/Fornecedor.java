@@ -31,4 +31,8 @@ public class Fornecedor {
     @OneToMany(mappedBy = "idFornecedor")
     @JsonIgnore
     private List<LoteVacina> loteVacina = new ArrayList<>();
+
+    public void putListLoteVacina(LoteVacina loteVacinainserida){
+        this.loteVacina.add(loteVacinainserida);
+    }
 }

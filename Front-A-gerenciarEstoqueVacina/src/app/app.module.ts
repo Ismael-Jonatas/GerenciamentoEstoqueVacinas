@@ -13,14 +13,18 @@ import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
 import { LoginComponent } from './views/login/login.component';
 import { HomeComponent } from './views/home/home.component';
-import { UsuarioCreateComponent } from './views/usuario/usuario-create/usuario-create.component';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { HttpClientModule } from "@angular/common/http";
 import { MatButtonModule } from "@angular/material/button";
 import { FormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
-
+import { UsuarioCreateComponent } from './views/usuario/usuario-create/usuario-create.component';
+import {FornecedorCreateComponent} from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
+import {VacinaCreateComponent} from "./views/vacina/vacina-create/vacina-create.component";
+import {LoteCreateComponent} from "./views/lote/lote-create/lote-create.component";
+import {MatSelectModule} from "@angular/material/select";
+import {MatOptionModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -31,7 +35,9 @@ import { MatInputModule } from "@angular/material/input";
     LoginComponent,
     HomeComponent,
     UsuarioCreateComponent,
-
+    FornecedorCreateComponent,
+    VacinaCreateComponent,
+    LoteCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,9 @@ import { MatInputModule } from "@angular/material/input";
     HttpClientModule,
     MatButtonModule,
     FormsModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
