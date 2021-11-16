@@ -1,4 +1,4 @@
-.div-lote{
+.div-user{
   display:flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -9,25 +9,64 @@ button{
   margin-top: 15px;
 }
 
-.card-lote{
+.card-user{
   margin-left: 30px;
 }
 
-#inputData {
-  margin-right: 50px;
+header {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 1000px;
+
+  .row-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  mat-form-field.input-pesquisar, form-field.input-pesquisar * {
+    width: 100%;
+  }
 }
 
-#inputDescricao {
-  margin-right: 50px;
-}
-#inputQuantidade {
-  margin-right: 50px;
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  max-width: 1000px;
+  background-color: #FFF;
+
+  mat-table {
+    width: 100%;
+  }
+
+  p {
+    margin: 12px 0;
+    text-align: center;
+    font-weight: lighter;
+    font-family: 'Roboto', sans-serif;
+  }
 }
 
-.selectfornecedor{
-  margin-right: 20px;
-}
-
-.selectvacina{
-  margin-right: 40px;
+.popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0 0 0 / .5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999999999;
 }

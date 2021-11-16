@@ -1,7 +1,8 @@
 export interface Lote{
+  id?: number
   dataVencimento: Date
-  descricao: String
-  quantidade: Number
+  descricao: string
+  quantidade: number
   idFornecedor: number
   idTipoVacina: number
 }

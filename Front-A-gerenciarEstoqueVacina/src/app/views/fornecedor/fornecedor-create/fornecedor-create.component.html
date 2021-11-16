@@ -1,1 +1,63 @@
-<p>fornecedor-create works!</p>
+<div class="div-user">
+  <div *ngIf="flagShowPopup" #popUpBox class="popup" (click)="clickPoUp($event,popUpBox)">
+    <mat-card class="card-user">
+      <mat-card-title>Adicionar Fornecedor</mat-card-title>
+      <form action="">
+        <mat-form-field id="inputName">
+          <input matInput placeholder="Nome" [(ngModel)]="fornecedor.nome" name="nome">
+        </mat-form-field>
+
+        <mat-form-field id="inputCNPJ">
+          <input matInput placeholder="CNPJ" [(ngModel)]="fornecedor.cnpj" name="cnpj">
+        </mat-form-field>
+
+      </form>
+      <button #buttonSalvar mat-raised-button (click)="createFornecedor(buttonSalvar,buttonCancelar)"  color="primary" >Salvar</button>
+      <button #buttonCancelar mat-raised-button (click)="showPopUp()" >Cancelar</button>
+    </mat-card>
+  </div>
+
+  <header>
+
+    <div class="row-add">
+      <h3>Fornecedores</h3>
+
+      <button (click)="showPopUp()" mat-fab color="primary" aria-label="Adicionar novo fornecedor">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field class="input-pesquisar" appearance="fill">
+      <mat-label>Pesquisar por fornecedor:</mat-label>
+      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o fornecedor desejado">
+    </mat-form-field>
+
+  </header>
+
+  <div class="content">
+    <mat-table #table [dataSource]="filterFornecedores">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.nome}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="cnpj">
+        <mat-header-cell *matHeaderCellDef>CNPJ</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.cpnj}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <p *ngIf="filterFornecedores.length === 0">Nenhum fornecedor encontrado.</p>
+  </div>
+</div>
+

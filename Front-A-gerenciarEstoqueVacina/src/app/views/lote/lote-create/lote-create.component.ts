@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import {LoteService} from "../../../service/lote.service";
-import {Router} from "@angular/router";
-import {Lote} from "../../../model/lote.model";
-import {FornecedorService} from "../../../service/fornecedor.service";
 import {TipoVacinaService} from "../../../service/tipoVacina.service";
+import {FornecedorService} from "../../../service/fornecedor.service";
+import {Router} from "@angular/router";
 import {Fornecedor} from "../../../model/fornecedor.model";
+import {TipoVacina} from "../../../model/tipoVacina.model";
+import {Lote} from "../../../model/lote.model";
 
 @Component({
   selector: 'app-lote-create',
@@ -13,56 +15,100 @@ import {Fornecedor} from "../../../model/fornecedor.model";
 })
 export class LoteCreateComponent implements OnInit {
 
-  lotevacina: Lote = {
+  filterLotes: Lote[] = [];
+  lotes: Lote[] = [];
+  flagShowPopup = false;
+  displayedColumns: string[] = ['id', 'dataVencimento', 'descricao','quantidade','idFornecedor','idTipo'];
+  lote: Lote = {
     dataVencimento: new Date(),
     descricao: '',
     quantidade: 0,
     idFornecedor: 0,
-    idTipoVacina: 0,
+    idTipoVacina: 0
   }
+  fornecedores: Fornecedor[] = [];
+  tiposVacina: TipoVacina[] = [];
 
-  fornecedores!: any
-  tiposVacina!: any
-
-  constructor(private loteservice:LoteService, private router:Router, private fornecedorService:FornecedorService, private tipoVacinaService: TipoVacinaService ) { }
+  constructor(private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getFornecedores()
-    this.getVacina()
+    this.getLotes();
+    this.getTiposVacina();
+    this.getFornecedores();
   }
 
-  createLoteVacina():void{
-    this.loteservice.create(this.lotevacina).subscribe(()=>{
-      this.loteservice.showMessage("Lote Cadastrado!")
-      this.router.navigate(['/lotevacina'])
-    })
+  showPopUp(): void {
+    this.flagShowPopup = !this.flagShowPopup;
   }
 
-  cancelCadastro():void{
-    this.router.navigate(['/'])
+  async getLotes() {
+
+    this.loteService.read().subscribe((lotes: Lote[]) => {
+      this.lotes = lotes;
+      this.filterLotes = lotes;
+    });
+
   }
 
+  async getTiposVacina() {
+    this.tipoVacinaService.read().subscribe((tiposVacina: TipoVacina[]) => {
+      this.tiposVacina = tiposVacina;
+    });
+  }
 
-  getFornecedores(){
-    this.fornecedorService.read().subscribe(fornecedores =>{
-      if(fornecedores.length == 0){
-        this.fornecedorService.showMessage("É necessário cadastrar um fornecodor antes!")
-        this.router.navigate(['/fornecedor'])
-      }else{
-        this.fornecedores = fornecedores
+  async getFornecedores() {
+    this.fornecedorService.read().subscribe((fornecedores: Fornecedor[]) => {
+      this.fornecedores = fornecedores;
+    });
+  }
+
+  createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
+    if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipoVacina!= 0) {
+      buttonSalvar.disabled = true;
+      buttonCancelar.disabled = true;
+
+      this.loteService.create(this.lote).subscribe(()=>{
+        this.loteService.showMessage("Lote Cadastrado!")
+        location.reload();
+      })
+    } else {
+      this.loteService.showMessage("Preencha todos os campos!")
+    }
+  }
+
+  search(input: HTMLInputElement) {
+    const searchText = input.value;
+    this.filterLotes = this.lotes.filter(lote => {
+
+      let validId = false;
+      if(lote.id !== undefined) {
+        validId = lote.id.toString().includes(searchText.toLowerCase());
       }
-    })
-  }
 
-  getVacina(){
-    this.tipoVacinaService.getAll().subscribe(tiposVacina =>{
-      if(tiposVacina.length == 0){
-        this.tiposVacina.showMessage("É necessário cadastrar uma vacina antes!")
-        this.router.navigate(['/tipovacina'])
-      }else{
-        this.tiposVacina = tiposVacina
+      let validDate = false;
+      if(lote.dataVencimento !== undefined) {
+        const date = lote.dataVencimento.toString().split("T")[0].split("-").reverse().join("/");
+        const hour = lote.dataVencimento.toString().split("T")[1].split(".")[0];
+        validDate = `${date} ${hour}`.includes(searchText.toLowerCase());
       }
-    })
+
+      let validDescription = false;
+      if(lote.descricao !== undefined) {
+        validDescription = lote.descricao.toLowerCase().includes(searchText.toLowerCase());
+      }
+
+      let validCount = false;
+      if(lote.quantidade !== undefined) {
+        validCount = lote.quantidade.toString().toLowerCase().includes(searchText.toLowerCase());
+      }
+
+      return validId || validDate || validDescription || validCount;
+    });
   }
 
+  clickPoUp(event: Event, popUp: HTMLDivElement) {
+    if(event.target === popUp) {
+      this.showPopUp();
+    }
+  }
 }

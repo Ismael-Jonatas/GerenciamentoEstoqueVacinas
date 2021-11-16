@@ -10,24 +10,28 @@ import { Injectable } from "@angular/core";
 
 export class TipoVacinaService{
 
-  baseUrl = "http://localhost:8080/tipoVacina"
+  baseUrl = "http://localhost:8080/tipovacina"
 
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) {
+  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
+
+  showMessage(msg:string):void{
+      this.snackBar.open(msg,'X',{duration:3000,
+                                                horizontalPosition:"right",
+                                                verticalPosition:"top"})
   }
 
-  getAll(): Observable<TipoVacina[]> {
-    return this.http.get<TipoVacina[]>(this.baseUrl)
+  create(tipoVacina:TipoVacina):Observable<TipoVacina>{
+      return this.http.post<TipoVacina>(this.baseUrl, tipoVacina)
   }
 
-  showMessage(msg: string):void{
-    this.snackBar.open(msg,'X', {duration:3000,
-                                              horizontalPosition:"right",
-                                              verticalPosition:"top"})
+  read():Observable<TipoVacina[]>{
+      const url = `${this.baseUrl}s`
+      return this.http.get<TipoVacina[]>(url)
   }
 
-  create(tipoVacina: TipoVacina): Observable<TipoVacina>{
-    return this.http.post<TipoVacina>(this.baseUrl, tipoVacina)
+  readById(id:string | null):Observable<TipoVacina>{
+      const url = `${this.baseUrl}/${id}`
+      return this.http.get<TipoVacina>(url)
   }
-
 
 }
