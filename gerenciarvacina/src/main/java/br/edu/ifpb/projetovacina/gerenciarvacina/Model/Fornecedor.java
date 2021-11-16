@@ -21,6 +21,7 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Fornecedor {
     @EqualsAndHashCode.Include
+    @Column(name="id_fornecedor")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
