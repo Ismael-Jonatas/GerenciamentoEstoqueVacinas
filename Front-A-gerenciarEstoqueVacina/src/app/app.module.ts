@@ -8,6 +8,7 @@ import { HeaderComponent } from './components/template/header/header.component';
 import { FooterComponent } from './components/template/footer/footer.component';
 import { NavComponent } from './components/template/nav/nav.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
@@ -19,9 +20,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { MatButtonModule } from "@angular/material/button";
 import { FormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
+import { MatTableModule } from '@angular/material/table';
 import { UsuarioCreateComponent } from './views/usuario/usuario-create/usuario-create.component';
 import {FornecedorCreateComponent} from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
-import {VacinaCreateComponent} from "./views/vacina/vacina-create/vacina-create.component";
+import {TipoVacinaCreateComponent} from "./views/vacina/vacina-create/vacina-create.component";
 import {LoteCreateComponent} from "./views/lote/lote-create/lote-create.component";
 import {MatSelectModule} from "@angular/material/select";
 import {MatOptionModule} from "@angular/material/core";
@@ -38,16 +40,18 @@ import { UsuarioComponent } from './components/template/usuario/usuario.componen
     HomeComponent,
     UsuarioCreateComponent,
     FornecedorCreateComponent,
-    VacinaCreateComponent,
+    TipoVacinaCreateComponent,
     LoteCreateComponent,
     UsuarioReadComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    LoteCreateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatIconModule,
     MatSidenavModule,
     MatListModule,
     MatCardModule,
@@ -58,7 +62,8 @@ import { UsuarioComponent } from './components/template/usuario/usuario.componen
     FormsModule,
     MatInputModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

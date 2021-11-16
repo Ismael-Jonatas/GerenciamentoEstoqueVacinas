@@ -4,7 +4,7 @@ import { HomeComponent } from './views/home/home.component';
 import { UsuarioCreateComponent } from './views/usuario/usuario-create/usuario-create.component';
 import { LoginComponent } from './views/login/login.component';
 import { FornecedorCreateComponent } from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
-import { VacinaCreateComponent } from "./views/vacina/vacina-create/vacina-create.component";
+import { TipoVacinaCreateComponent } from "./views/vacina/vacina-create/vacina-create.component";
 import { LoteCreateComponent } from "./views/lote/lote-create/lote-create.component";
 import {UsuarioComponent} from "./components/template/usuario/usuario.component";
 import {UsuarioReadComponent} from "./views/usuario/usuario-read/usuario-read.component";
@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path:"tipovacina",
-    component: VacinaCreateComponent
+    component: TipoVacinaCreateComponent
   },
   {
     path:"lotevacina",

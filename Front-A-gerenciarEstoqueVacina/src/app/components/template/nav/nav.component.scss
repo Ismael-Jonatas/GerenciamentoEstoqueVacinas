@@ -1,7 +1,6 @@
 .content{
-  margin-left:120px !important;
+  margin-left:150px !important;
   padding:20px;
-  background-color: rgb(216, 216, 216);
   color: black;
 }
 
@@ -11,7 +10,12 @@
   bottom: 40px;
   left: 0;
   right: 0;
+  background-color: rgb(216, 216, 216);
+}
 
+mat-sidenav {
+  margin: 8px;
+  border-radius: 15px;
 }
 
 .menu-container i {
@@ -23,3 +27,6 @@
   margin-right: 8px;
 }
 
+mat-sidenav-container mat-sidenav {
+  z-index: 1;
+}

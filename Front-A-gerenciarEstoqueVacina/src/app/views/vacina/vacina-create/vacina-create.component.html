@@ -1,1 +1,63 @@
-<p>vacina-create works!</p>
+<div class="div-user">
+  <div *ngIf="flagShowPopup" class="popup">
+    <mat-card class="card-user">
+      <mat-card-title>Tipos de Vacinas</mat-card-title>
+      <form action="">
+        <mat-form-field id="inputName">
+          <input matInput placeholder="Nome" [(ngModel)]="vacina.nome" name="nome">
+        </mat-form-field>
+
+        <mat-form-field id="inputDescricao">
+          <input matInput placeholder="Descrição" [(ngModel)]="vacina.descricao" name="descricao">
+        </mat-form-field>
+
+      </form>
+      <button mat-raised-button (click)="createTipoVacina()"  color="primary" >Salvar</button>
+      <button mat-raised-button (click)="cancelCadastro()" >Cancelar</button>
+    </mat-card>
+  </div>
+
+  <header>
+
+    <div class="row-add">
+      <h3>Tipos de Vacina</h3>
+
+      <button (click)="showPopUp()" mat-fab color="primary" aria-label="Adicionar novo fornecedor">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field class="input-pesquisar" appearance="fill">
+      <mat-label>Pesquisar por Tipo de Vacina:</mat-label>
+      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o tipo de vacina desejado">
+    </mat-form-field>
+
+  </header>
+
+  <div class="listVacinas">
+    <mat-table #table [dataSource]="filterTiposVacinas">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.nome}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.descricao}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <p *ngIf="filterTiposVacinas.length === 0">Nenhum fornecedor encontrado.</p>
+  </div>
+</div>
+

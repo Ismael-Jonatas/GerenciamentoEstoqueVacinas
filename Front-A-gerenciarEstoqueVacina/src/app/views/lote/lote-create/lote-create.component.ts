@@ -3,7 +3,7 @@ import {LoteService} from "../../../service/lote.service";
 import {Router} from "@angular/router";
 import {Lote} from "../../../model/lote.model";
 import {FornecedorService} from "../../../service/fornecedor.service";
-import {VacinaService} from "../../../service/vacina.service";
+import {TipoVacinaService} from "../../../service/tipoVacina.service";
 import {Fornecedor} from "../../../model/fornecedor.model";
 
 @Component({
@@ -22,9 +22,9 @@ export class LoteCreateComponent implements OnInit {
   }
 
   fornecedores!: any
-  vacinas!: any
+  tiposVacina!: any
 
-  constructor(private loteservice:LoteService, private router:Router, private fornecedorService:FornecedorService, private vacinaService: VacinaService ) { }
+  constructor(private loteservice:LoteService, private router:Router, private fornecedorService:FornecedorService, private tipoVacinaService: TipoVacinaService ) { }
 
   ngOnInit(): void {
     this.getFornecedores()
@@ -55,12 +55,12 @@ export class LoteCreateComponent implements OnInit {
   }
 
   getVacina(){
-    this.vacinaService.read().subscribe(vacinas =>{
-      if(vacinas.length == 0){
-        this.vacinaService.showMessage("É necessário cadastrar uma vacina antes!")
+    this.tipoVacinaService.getAll().subscribe(tiposVacina =>{
+      if(tiposVacina.length == 0){
+        this.tiposVacina.showMessage("É necessário cadastrar uma vacina antes!")
         this.router.navigate(['/tipovacina'])
       }else{
-        this.vacinas = vacinas
+        this.tiposVacina = tiposVacina
       }
     })
   }
