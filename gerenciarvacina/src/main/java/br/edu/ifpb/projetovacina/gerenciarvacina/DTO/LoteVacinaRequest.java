@@ -6,7 +6,6 @@ import br.edu.ifpb.projetovacina.gerenciarvacina.Model.LoteVacina;
 import br.edu.ifpb.projetovacina.gerenciarvacina.Model.TipoVacina;
 import br.edu.ifpb.projetovacina.gerenciarvacina.Repository.FornecedorRepository;
 import br.edu.ifpb.projetovacina.gerenciarvacina.Repository.TipoVacinaRepository;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

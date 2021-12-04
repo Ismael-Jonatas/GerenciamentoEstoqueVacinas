@@ -1,18 +1,18 @@
 <div class="div-user">
   <mat-card>
     <mat-card-title>Login</mat-card-title>
-    <form action="">
+    <form action="log">
       <mat-form-field id="inputName">
-        <input matInput placeholder="Nome"  name="nome">
+        <input matInput placeholder="Matricula" type="text" [(ngModel)]="usuario.matricula"  name="matricula">
       </mat-form-field>
 
       <mat-form-field id="inputSenha">
-        <input matInput placeholder="Senha"  name="senha">
+        <input matInput placeholder="Senha" type="password" [(ngModel)]="usuario.senha"  name="senha">
       </mat-form-field>
 
     </form>
-    <button mat-raised-button color="primary" >Enviar</button>
-    <button mat-raised-button>Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" name="enivar" (click)="fazerLogin()" >Enviar</button>
+    <button mat-raised-button name="cancelar" (click)="cancelar()">Cancelar</button>
   </mat-card>
 </div>
 

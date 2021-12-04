@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +28,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatOptionModule} from "@angular/material/core";
 import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
 import { UsuarioComponent } from './components/template/usuario/usuario.component';
+import { LoginService } from './service/login.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { UsuarioComponent } from './components/template/usuario/usuario.componen
     LoteCreateComponent,
     UsuarioReadComponent,
     UsuarioComponent,
-    LoteCreateComponent
+    LoteCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +65,18 @@ import { UsuarioComponent } from './components/template/usuario/usuario.componen
     MatOptionModule,
     MatTableModule
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  mostrarMenu: boolean = false;
+
+  constructor(private loginService : LoginService) {
+  }
+
+  ngOnInit(){
+    this.loginService.mostrarMenuEmitter.subscribe(
+      mostrar => this.mostrarMenu = mostrar
+    );
+  }
+}
