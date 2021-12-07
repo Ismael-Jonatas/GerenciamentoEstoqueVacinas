@@ -20,12 +20,16 @@ import { MatButtonModule } from "@angular/material/button";
 import { FormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { UsuarioCreateComponent } from './views/usuario/usuario-create/usuario-create.component';
-import {FornecedorCreateComponent} from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
-import {TipoVacinaCreateComponent} from "./views/vacina/vacina-create/vacina-create.component";
-import {LoteCreateComponent} from "./views/lote/lote-create/lote-create.component";
-import {MatSelectModule} from "@angular/material/select";
-import {MatOptionModule} from "@angular/material/core";
+import { FornecedorCreateComponent } from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
+import { TipoVacinaCreateComponent } from "./views/vacina/vacina-create/vacina-create.component";
+import { LoteCreateComponent } from "./views/lote/lote-create/lote-create.component";
+
+import { MatSelectModule } from "@angular/material/select";
+import { MatOptionModule } from "@angular/material/core";
+
 import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
 import { UsuarioComponent } from './components/template/usuario/usuario.component';
 import { LoginService } from './service/login.service';
@@ -46,7 +50,7 @@ import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro
     UsuarioReadComponent,
     UsuarioComponent,
     LoteCreateComponent,
-    RegistroSaidaComponent,
+    RegistroSaidaComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +69,8 @@ import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
   providers: [LoginService],
   bootstrap: [AppComponent]

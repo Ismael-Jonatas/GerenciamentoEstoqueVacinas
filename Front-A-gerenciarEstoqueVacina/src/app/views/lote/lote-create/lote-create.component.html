@@ -24,7 +24,7 @@
 
       <mat-form-field appearance="fill" class="selectvacina">
         <mat-label>Selecione a Vacina</mat-label>
-        <mat-select [(ngModel)]="lote.idTipoVacina" name="vacina">
+        <mat-select [(ngModel)]="lote.idTipo" name="vacina">
           <mat-option *ngFor="let tipoVacina of tiposVacina"  [value]="tipoVacina.id">{{tipoVacina.nome}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -48,6 +48,11 @@
       <mat-label>Pesquisar por lote:</mat-label>
       <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o lote desejado">
     </mat-form-field>
+
+    <section class="filter-checkbox">
+      <mat-checkbox (change)="search(inputSearch)" [(ngModel)]="lotesEmEstoque">Exibir em estoque</mat-checkbox>
+      <mat-checkbox (change)="search(inputSearch)" [(ngModel)]="quantidadeVacinasFornecedor">Lotes por fornecedor e tipo</mat-checkbox>
+    </section>
 
   </header>
 
@@ -74,18 +79,18 @@
         <mat-cell *matCellDef="let element"> {{element.quantidade}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="idFornecedor">
-        <mat-header-cell *matHeaderCellDef>Id Fornecedor</mat-header-cell>
+      <ng-container matColumnDef="fornecedor">
+        <mat-header-cell *matHeaderCellDef>Fornecedor</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.idFornecedor.id}} - {{element.idFornecedor.nome}}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="idTipo">
-        <mat-header-cell *matHeaderCellDef>TipoVacina</mat-header-cell>
+      <ng-container matColumnDef="tipo">
+        <mat-header-cell *matHeaderCellDef>Tipo Vacina</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.idTipo.id}} - {{element.idTipo.nome}}</mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-header-row *matHeaderRowDef="filterDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: filterDisplayedColumns;"></mat-row>
 
     </mat-table>
 

@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {Fornecedor} from "../../../model/fornecedor.model";
 import {TipoVacina} from "../../../model/tipoVacina.model";
 import {Lote} from "../../../model/lote.model";
+import {LoteCreate} from "../../../model/loteCreate.model";
 
 @Component({
   selector: 'app-lote-create',
@@ -18,16 +19,19 @@ export class LoteCreateComponent implements OnInit {
   filterLotes: Lote[] = [];
   lotes: Lote[] = [];
   flagShowPopup = false;
-  displayedColumns: string[] = ['id', 'dataVencimento', 'descricao','quantidade','idFornecedor','idTipo'];
-  lote: Lote = {
+  displayedColumns: string[] = ['id', 'dataVencimento', 'descricao','quantidade','fornecedor','tipo'];
+  filterDisplayedColumns: string[] = ['id', 'dataVencimento', 'descricao','quantidade','fornecedor','tipo'];
+  lote: LoteCreate = {
     dataVencimento: new Date(),
     descricao: '',
     quantidade: 0,
     idFornecedor: 0,
-    idTipoVacina: 0
+    idTipo: 0
   }
   fornecedores: Fornecedor[] = [];
   tiposVacina: TipoVacina[] = [];
+  lotesEmEstoque: boolean = false;
+  quantidadeVacinasFornecedor: boolean = false;
 
   constructor(private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
 
@@ -42,12 +46,10 @@ export class LoteCreateComponent implements OnInit {
   }
 
   async getLotes() {
-
     this.loteService.read().subscribe((lotes: Lote[]) => {
       this.lotes = lotes;
       this.filterLotes = lotes;
     });
-
   }
 
   async getTiposVacina() {
@@ -63,7 +65,7 @@ export class LoteCreateComponent implements OnInit {
   }
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipoVacina!= 0) {
+    if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipo!= 0) {
       buttonSalvar.disabled = true;
       buttonCancelar.disabled = true;
 
@@ -78,7 +80,30 @@ export class LoteCreateComponent implements OnInit {
 
   search(input: HTMLInputElement) {
     const searchText = input.value;
-    this.filterLotes = this.lotes.filter(lote => {
+
+    if(this.quantidadeVacinasFornecedor) {
+      this.filterDisplayedColumns = this.displayedColumns.filter(item => !["id","dataVencimento","descricao"].includes(item));
+    } else {
+      this.filterDisplayedColumns = this.displayedColumns;
+    }
+
+    let fornecedorTipoVacina: Lote[] = [];
+    let lotesCopy: Lote[] = JSON.parse(JSON.stringify(this.lotes));
+
+    this.filterLotes = lotesCopy.filter(lote => {
+
+      if(this.quantidadeVacinasFornecedor) {
+        const checkIndex: any = fornecedorTipoVacina.map((item,i) =>
+          item.idFornecedor.id === lote.idFornecedor.id && item.idTipo.id === lote.idTipo.id ? i : false
+        ).filter(i => i !== false);
+        if(checkIndex.length > 0) {
+          const index = checkIndex[0];
+          lotesCopy[index].quantidade += lote.quantidade;
+          return false;
+        } else {
+          fornecedorTipoVacina.push(lote);
+        }
+      }
 
       let validId = false;
       if(lote.id !== undefined) {
@@ -102,8 +127,20 @@ export class LoteCreateComponent implements OnInit {
         validCount = lote.quantidade.toString().toLowerCase().includes(searchText.toLowerCase());
       }
 
-      return validId || validDate || validDescription || validCount;
+      let validFornecedor = false;
+      if(lote.idFornecedor !== undefined) {
+        validFornecedor = `${lote.idFornecedor.id} - ${lote.idFornecedor.nome}`.toLowerCase().includes(searchText.toLowerCase());
+      }
+
+      let validTipoVacina = false;
+      if(lote.idTipo !== undefined) {
+        validTipoVacina = `${lote.idTipo.id} - ${lote.idTipo.nome}`.toLowerCase().includes(searchText.toLowerCase());
+      }
+
+      return validId || validDate || validDescription || validCount || validFornecedor || validTipoVacina;
     });
+
+    this.filterLotes = this.filterLotes.filter(lote => !(this.lotesEmEstoque && lote.quantidade < 1));
   }
 
   clickPoUp(event: Event, popUp: HTMLDivElement) {
