@@ -1,0 +1,94 @@
+<div class="div-user">
+  <div *ngIf="flagShowPopup" #popUpBox class="popup" (click)="clickPoUp($event,popUpBox)">
+    <mat-card class="card-user">
+      <mat-card-title>Registrar Saida</mat-card-title>
+
+      <form action="">
+        <mat-form-field  id="inputData">
+          <input  matInput placeholder="Data de Saida" type="datetime-local" [(ngModel)]="registroSaida.data" name="data">
+        </mat-form-field>
+        <mat-form-field  id="inputDescricao">
+          <input  matInput placeholder="Descrição"  [(ngModel)]="registroSaida.descricao" name="descricao">
+        </mat-form-field>
+        <mat-form-field  id="inputQuantidade">
+          <input  matInput placeholder="Quantidade" [(ngModel)]="registroSaida.quantidade"  name="quantidade">
+        </mat-form-field>
+      </form>
+
+      <mat-form-field appearance="fill" class="selectfornecedor">
+        <mat-label>Selecione o Usuario</mat-label>
+        <mat-select [(ngModel)]="registroSaida.idUsuario" name="usuario">
+          <mat-option *ngFor="let usuario of usuarios"  [value]="usuario.id">{{usuario.nome}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="selectvacina">
+        <mat-label>Selecione o Lote</mat-label>
+        <mat-select [(ngModel)]="registroSaida.idLote" name="lote">
+          <mat-option *ngFor="let lote of lotes"  [value]="lote.id">{{lote.id}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button #buttonSalvar (click)="createLote(buttonSalvar, buttonCancelar)"  color="primary" >Salvar</button>
+      <button mat-raised-button #buttonCancelar (click)="showPopUp()" >Cancelar</button>
+    </mat-card>
+  </div>
+
+  <header>
+
+    <div class="row-add">
+      <h3>Registros de Saida</h3>
+
+      <button (click)="showPopUp()" mat-fab color="primary" aria-label="Adicionar novo Registro">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field class="input-pesquisar" appearance="fill">
+      <mat-label>Pesquisar por Registro:</mat-label>
+      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o registro desejado">
+    </mat-form-field>
+
+  </header>
+
+  <div class="content">
+    <mat-table #table [dataSource]="filterRegistroSaida">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="data">
+        <mat-header-cell *matHeaderCellDef>Data Saida</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.data.split("T")[0].split("-").reverse().join("/")}} {{element.data.split("T")[1].split(".")[0]}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.descricao}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="quantidade">
+        <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.quantidade}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idLote">
+        <mat-header-cell *matHeaderCellDef>Lote</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.idLote.id}} - {{element.idLote.descricao}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idUsuario">
+        <mat-header-cell *matHeaderCellDef>Usuario</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.idUsuario.id}} - {{element.idUsuario.nome}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <p *ngIf="filterRegistroSaida.length === 0">Nenhum tipo Resgistro de Saida encontrado.</p>
+  </div>
+</div>

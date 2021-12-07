@@ -19,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoteVacinaRequest {
+
     private Date dataVencimento;
     private String descricao;
     private Integer quantidade;

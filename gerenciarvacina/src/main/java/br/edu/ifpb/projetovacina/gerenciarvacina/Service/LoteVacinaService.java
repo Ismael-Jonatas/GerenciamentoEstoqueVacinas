@@ -32,7 +32,8 @@ public class LoteVacinaService {
 
     @Transactional
     public LoteVacina inserirLoteVacina(LoteVacinaRequest loteVacinaRequest){
-        LoteVacina loteVacincaInserida = this.loteVacinaRepository.save(loteVacinaRequest.toLotevacina(fornecedorRepository, tipoVacinaRepository));
+        LoteVacina loteVacincaInserida = this.loteVacinaRepository.save(loteVacinaRequest.
+                toLotevacina(fornecedorRepository, tipoVacinaRepository));
         return loteVacincaInserida;
     }
 

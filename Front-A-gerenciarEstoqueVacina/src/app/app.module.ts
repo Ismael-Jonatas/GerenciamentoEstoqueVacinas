@@ -29,6 +29,7 @@ import {MatOptionModule} from "@angular/material/core";
 import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
 import { UsuarioComponent } from './components/template/usuario/usuario.component';
 import { LoginService } from './service/login.service';
+import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro-saida.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { LoginService } from './service/login.service';
     UsuarioReadComponent,
     UsuarioComponent,
     LoteCreateComponent,
+    RegistroSaidaComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,14 +71,4 @@ import { LoginService } from './service/login.service';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  mostrarMenu: boolean = false;
-
-  constructor(private loginService : LoginService) {
-  }
-
-  ngOnInit(){
-    this.loginService.mostrarMenuEmitter.subscribe(
-      mostrar => this.mostrarMenu = mostrar
-    );
-  }
 }

@@ -8,6 +8,7 @@ import { TipoVacinaCreateComponent } from "./views/vacina/vacina-create/vacina-c
 import { LoteCreateComponent } from "./views/lote/lote-create/lote-create.component";
 import {UsuarioComponent} from "./components/template/usuario/usuario.component";
 import {UsuarioReadComponent} from "./views/usuario/usuario-read/usuario-read.component";
+import { RegistroSaidaComponent } from "./views/Registro/registro-saida/registro-saida.component";
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path:"usuarios",
     component: UsuarioReadComponent
+  },
+  {
+    path:"registrodesaida",
+    component: RegistroSaidaComponent
   }
 
 
