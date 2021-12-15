@@ -3,6 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Fornecedor } from 'src/app/model/fornecedor.model';
 import { FornecedorService } from 'src/app/service/fornecedor.service';
+import {LoginService} from "../../../service/login.service";
 
 @Component({
   selector: 'app-fornecedor-create',
@@ -20,7 +21,7 @@ export class FornecedorCreateComponent implements OnInit {
     cnpj: ''
   }
 
-  constructor(private fornecedorService: FornecedorService, private router: Router) { }
+  constructor(private fornecedorService: FornecedorService, private router: Router, private loginService: LoginService) { }
 
   ngOnInit(): void {
     this.getFornecedores();
@@ -40,16 +41,20 @@ export class FornecedorCreateComponent implements OnInit {
   }
 
   createFornecedor(buttonSalvar: MatButton, buttonCancelar: MatButton):void {
-    if(this.fornecedor.nome !== '' && this.fornecedor.cnpj !== '') {
-      buttonSalvar.disabled = true;
-      buttonCancelar.disabled = true;
+    if (this.loginService.getUsuarioLogado() == true){
+      if(this.fornecedor.nome !== '' && this.fornecedor.cnpj !== '') {
+        buttonSalvar.disabled = true;
+        buttonCancelar.disabled = true;
 
-      this.fornecedorService.create(this.fornecedor).subscribe(()=>{
-        this.fornecedorService.showMessage("Fornecedor Cadastrado!");
-        location.reload();
-      })
-    } else {
-      this.fornecedorService.showMessage("Preencha todos os campos!");
+        this.fornecedorService.create(this.fornecedor).subscribe(()=>{
+          this.fornecedorService.showMessage("Fornecedor Cadastrado!");
+          this.router.navigate(['/fornecedor'])
+        })
+      } else {
+        this.fornecedorService.showMessage("Preencha todos os campos!");
+      }
+    }else{
+      this.fornecedorService.showMessage("Você não Possui Privilégios!");
     }
   }
 

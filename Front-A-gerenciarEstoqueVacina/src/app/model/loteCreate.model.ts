@@ -4,5 +4,5 @@ export interface LoteCreate{
   descricao: string
   quantidade: number
   idFornecedor: number
-  idTipo: number
+  idTipoVacina: number
 }

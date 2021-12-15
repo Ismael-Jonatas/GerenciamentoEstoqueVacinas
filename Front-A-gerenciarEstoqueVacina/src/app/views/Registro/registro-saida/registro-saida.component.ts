@@ -7,6 +7,7 @@ import {Usuario} from "../../../model/usuario.model";
 import {UsuarioService} from "../../../service/usuario.service";
 import {RegistroDeSaidaService} from "../../../service/registro-de-saida.service";
 import {MatButton} from "@angular/material/button";
+import {LoginService} from "../../../service/login.service";
 
 @Component({
   selector: 'app-registro-saida',
@@ -29,7 +30,7 @@ export class RegistroSaidaComponent implements OnInit {
   lotes: Lote[] = [];
   usuarios: Usuario[] = [];
 
-  constructor(private loteService: LoteService, private usuarioService: UsuarioService, private registroSaidaService: RegistroDeSaidaService, private router: Router) { }
+  constructor(private loginService:LoginService, private loteService: LoteService, private usuarioService: UsuarioService, private registroSaidaService: RegistroDeSaidaService, private router: Router) { }
 
   ngOnInit(): void {
     this.getLotes();
@@ -68,16 +69,20 @@ export class RegistroSaidaComponent implements OnInit {
 
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.registroSaida.descricao!= '' && this.registroSaida.quantidade!= 0 && this.registroSaida.data!= null && this.registroSaida.idLote!= 0 && this.registroSaida.idUsuario!= 0 ) {
-      buttonSalvar.disabled = true;
-      buttonCancelar.disabled = true;
+    if(this.loginService.getUsuarioLogado() == true){
+      if(this.registroSaida.descricao!= '' && this.registroSaida.quantidade!= 0 && this.registroSaida.data!= null && this.registroSaida.idLote!= 0 && this.registroSaida.idUsuario!= 0 ) {
+        buttonSalvar.disabled = true;
+        buttonCancelar.disabled = true;
 
-      this.registroSaidaService.create(this.registroSaida).subscribe(()=>{
-        this.registroSaidaService.showMessage("Registro Cadastrado!")
-        location.reload();
-      })
-    } else {
-      this.registroSaidaService.showMessage("Preencha todos os campos!")
+        this.registroSaidaService.create(this.registroSaida).subscribe(()=>{
+          this.registroSaidaService.showMessage("Registro Cadastrado!")
+          this.router.navigate(['/registrodesaida'])
+        })
+      } else {
+        this.registroSaidaService.showMessage("Preencha todos os campos!")
+      }
+    }else{
+      this.registroSaidaService.showMessage("Você não Possui Privilégios!")
     }
   }
 

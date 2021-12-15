@@ -3,7 +3,6 @@ import {Usuario} from "../model/usuario.model";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {EventEmitter} from "@angular/core";
 
 
 @Injectable({
@@ -12,8 +11,6 @@ import {EventEmitter} from "@angular/core";
 export class LoginService {
 
   private usuarioAutenticado: boolean = false;
-
-  mostrarMenuEmitter = new EventEmitter<boolean>();
 
   baseUrl = "http://localhost:8080/login"
 
@@ -33,12 +30,10 @@ export class LoginService {
 
   autenticaUsuarioLogado(stausAdmin: boolean):void{
     this.usuarioAutenticado = stausAdmin;
-    if(this.usuarioAutenticado == true){
-      this.mostrarMenuEmitter.emit(true);
-    }else{
-      this.mostrarMenuEmitter.emit(false);
-    }
 }
 
+  getUsuarioLogado():Boolean{
+    return this.usuarioAutenticado;
+  }
 }
-0
+

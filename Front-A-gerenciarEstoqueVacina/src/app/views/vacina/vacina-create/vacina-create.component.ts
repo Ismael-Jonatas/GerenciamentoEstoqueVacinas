@@ -3,6 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { TipoVacina } from "../../../model/tipoVacina.model";
 import { TipoVacinaService } from "../../../service/tipoVacina.service";
+import {LoginService} from "../../../service/login.service";
 
 @Component({
   selector: 'app-vacina-create',
@@ -21,7 +22,7 @@ export class TipoVacinaCreateComponent implements OnInit {
     loteVacina: []
   }
 
-  constructor(private tipoVacinaService: TipoVacinaService , private router: Router) { }
+  constructor(private tipoVacinaService: TipoVacinaService , private router: Router, private logiService:LoginService) { }
 
   ngOnInit(): void {
     this.getTiposVacina();
@@ -41,16 +42,20 @@ export class TipoVacinaCreateComponent implements OnInit {
   }
 
   createTipoVacina(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.tipoVacina.nome !== '' && this.tipoVacina.descricao !== '') {
-      buttonSalvar.disabled = true;
-      buttonCancelar.disabled = true;
+    if(this.logiService.getUsuarioLogado() == true){
+      if(this.tipoVacina.nome !== '' && this.tipoVacina.descricao !== '') {
+        buttonSalvar.disabled = true;
+        buttonCancelar.disabled = true;
 
-      this.tipoVacinaService.create(this.tipoVacina).subscribe(()=>{
-        this.tipoVacinaService.showMessage("Tipo de Vacina Cadastrado!")
-        location.reload();
-      })
-    } else {
-      this.tipoVacinaService.showMessage("Preencha todos os campos!")
+        this.tipoVacinaService.create(this.tipoVacina).subscribe(()=>{
+          this.tipoVacinaService.showMessage("Tipo de Vacina Cadastrado!")
+          this.router.navigate(['/tipovacina'])
+        })
+      } else {
+        this.tipoVacinaService.showMessage("Preencha todos os campos!")
+      }
+    }else{
+      this.tipoVacinaService.showMessage("Você não Possui Privilégios!")
     }
   }
 

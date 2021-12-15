@@ -24,7 +24,7 @@
 
       <mat-form-field appearance="fill" class="selectvacina">
         <mat-label>Selecione a Vacina</mat-label>
-        <mat-select [(ngModel)]="lote.idTipo" name="vacina">
+        <mat-select [(ngModel)]="lote.idTipoVacina" name="vacina">
           <mat-option *ngFor="let tipoVacina of tiposVacina"  [value]="tipoVacina.id">{{tipoVacina.nome}}</mat-option>
         </mat-select>
       </mat-form-field>

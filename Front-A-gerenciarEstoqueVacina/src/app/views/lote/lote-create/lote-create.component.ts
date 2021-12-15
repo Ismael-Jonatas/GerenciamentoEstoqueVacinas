@@ -8,6 +8,7 @@ import {Fornecedor} from "../../../model/fornecedor.model";
 import {TipoVacina} from "../../../model/tipoVacina.model";
 import {Lote} from "../../../model/lote.model";
 import {LoteCreate} from "../../../model/loteCreate.model";
+import {LoginService} from "../../../service/login.service";
 
 @Component({
   selector: 'app-lote-create',
@@ -26,14 +27,14 @@ export class LoteCreateComponent implements OnInit {
     descricao: '',
     quantidade: 0,
     idFornecedor: 0,
-    idTipo: 0
+    idTipoVacina: 0
   }
   fornecedores: Fornecedor[] = [];
   tiposVacina: TipoVacina[] = [];
   lotesEmEstoque: boolean = false;
   quantidadeVacinasFornecedor: boolean = false;
 
-  constructor(private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
+  constructor(private loginService:LoginService ,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
 
   ngOnInit(): void {
     this.getLotes();
@@ -65,16 +66,20 @@ export class LoteCreateComponent implements OnInit {
   }
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipo!= 0) {
-      buttonSalvar.disabled = true;
-      buttonCancelar.disabled = true;
+    if (this.loginService.getUsuarioLogado() == true){
+      if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipoVacina!= 0) {
+        buttonSalvar.disabled = true;
+        buttonCancelar.disabled = true;
 
-      this.loteService.create(this.lote).subscribe(()=>{
-        this.loteService.showMessage("Lote Cadastrado!")
-        location.reload();
-      })
-    } else {
-      this.loteService.showMessage("Preencha todos os campos!")
+        this.loteService.create(this.lote).subscribe(()=>{
+          this.loteService.showMessage("Lote Cadastrado!")
+          this.router.navigate(['/lotevacina'])
+        })
+      } else {
+        this.loteService.showMessage("Preencha todos os campos!")
+      }
+    }else{
+      this.loteService.showMessage("Você não Possui Privilégios!")
     }
   }
 
