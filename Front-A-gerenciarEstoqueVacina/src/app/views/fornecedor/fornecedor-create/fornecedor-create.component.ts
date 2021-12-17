@@ -41,7 +41,7 @@ export class FornecedorCreateComponent implements OnInit {
   }
 
   createFornecedor(buttonSalvar: MatButton, buttonCancelar: MatButton):void {
-    if (this.loginService.getUsuarioLogado() == true){
+    if (this.loginService.getStatus() == true){
       if(this.fornecedor.nome !== '' && this.fornecedor.cnpj !== '') {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;

@@ -69,7 +69,7 @@ export class RegistroSaidaComponent implements OnInit {
 
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.loginService.getUsuarioLogado() == true){
+    if(this.loginService.getStatus() == true){
       if(this.registroSaida.descricao!= '' && this.registroSaida.quantidade!= 0 && this.registroSaida.data!= null && this.registroSaida.idLote!= 0 && this.registroSaida.idUsuario!= 0 ) {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;

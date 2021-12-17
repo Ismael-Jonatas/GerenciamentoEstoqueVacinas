@@ -9,6 +9,11 @@ import {TipoVacina} from "../../../model/tipoVacina.model";
 import {Lote} from "../../../model/lote.model";
 import {LoteCreate} from "../../../model/loteCreate.model";
 import {LoginService} from "../../../service/login.service";
+import { RegistroEntrada } from "../../../model/registroEntrada";
+import { RegistroEntradaService } from "../../../service/registro-entrada.service";
+import {ToListagemDeRegistroEntrada} from "../../../model/ToListagemDeRegistroEntrada";
+
+
 
 @Component({
   selector: 'app-lote-create',
@@ -34,7 +39,9 @@ export class LoteCreateComponent implements OnInit {
   lotesEmEstoque: boolean = false;
   quantidadeVacinasFornecedor: boolean = false;
 
-  constructor(private loginService:LoginService ,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
+
+
+  constructor(private registroEntradaService: RegistroEntradaService, private loginService:LoginService ,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
 
   ngOnInit(): void {
     this.getLotes();
@@ -66,21 +73,47 @@ export class LoteCreateComponent implements OnInit {
   }
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if (this.loginService.getUsuarioLogado() == true){
+    if (this.loginService.getStatus() == true){
       if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipoVacina!= 0) {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
 
-        this.loteService.create(this.lote).subscribe(()=>{
+        let loteSalvo = this.loteService.create(this.lote).subscribe((loteSalvo)=>{
           this.loteService.showMessage("Lote Cadastrado!")
           this.router.navigate(['/lotevacina'])
+          console.log(loteSalvo)
+          this.createRegistroEntrada(loteSalvo.id ,loteSalvo.quantidade, loteSalvo.descricao)
+
         })
+
       } else {
         this.loteService.showMessage("Preencha todos os campos!")
       }
     }else{
       this.loteService.showMessage("Você não Possui Privilégios!")
     }
+  }
+
+  createRegistroEntrada(idLote: number | undefined, quantidade: number, descricao: string ):void{
+    let regastarIdUsuarioLogado = this.loginService.getIdUsuarioLogado()
+
+    if (idLote != undefined && regastarIdUsuarioLogado != 0) {
+
+      let registroEntrada:  ToListagemDeRegistroEntrada = {
+        idUsuario: regastarIdUsuarioLogado,
+        data: new Date(),
+        idLote: idLote,
+        quantidade: quantidade,
+        descricao: descricao
+      }
+      let salavadndo = this.registroEntradaService.create(registroEntrada).subscribe((salvando)=>{
+        console.log("Salvou????")
+        console.log(salavadndo)
+      })
+    }else{
+      this.registroEntradaService.showMessage("Lote ou Usário inexistente")
+    }
+
   }
 
   search(input: HTMLInputElement) {

@@ -1,0 +1,42 @@
+.div-user{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+button{
+  margin-right: 15px;
+  margin-top: 15px;
+}
+
+header {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 1000px;
+
+  mat-form-field.input-pesquisar, form-field.input-pesquisar * {
+    width: 100%;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  max-width: 1000px;
+  background-color: #FFF;
+  margin-bottom: 50px;
+
+  mat-table {
+    width: 100%;
+  }
+
+  p {
+    margin: 12px 0;
+    text-align: center;
+    font-weight: lighter;
+    font-family: 'Roboto', sans-serif;
+  }
+}
+

@@ -34,6 +34,7 @@ import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.
 import { UsuarioComponent } from './components/template/usuario/usuario.component';
 import { LoginService } from './service/login.service';
 import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro-saida.component';
+import { RegistroEntradaComponent } from './views/Registro/registro-entrada/registro-entrada.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro
     UsuarioReadComponent,
     UsuarioComponent,
     LoteCreateComponent,
-    RegistroSaidaComponent
+    RegistroSaidaComponent,
+    RegistroEntradaComponent
   ],
   imports: [
     BrowserModule,

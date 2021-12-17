@@ -16,17 +16,17 @@ public class RegistroSaidaController {
     @Autowired
     RegistroSaidaService registroSaidaService;
 
-    @GetMapping("/registrosdesaidas")
+    @GetMapping("/registros-de-saidas")
     public List<RegistroSaida> getRegistrosDeSaida(){
         return registroSaidaService.getRegistrosDeSaida();
     }
 
-    @GetMapping("/registrodesaida/{id}")
+    @GetMapping("/registro-de-saida/{id}")
     public RegistroSaida getRegistroDeSaidaPorId(@PathVariable Long idRegistroDeSaida){
         return registroSaidaService.getRegistroDeSaidaPorId(idRegistroDeSaida);
     }
 
-    @PostMapping("/registrodesaida")
+    @PostMapping("/registro-de-saida")
     public RegistroSaida inserirRegistro(@RequestBody RegistroSaidaRequest registroSaidaRequest){
         return registroSaidaService.inserirRegistro(registroSaidaRequest);
     }

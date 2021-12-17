@@ -60,7 +60,7 @@
       </ng-container>
 
       <ng-container matColumnDef="data">
-        <mat-header-cell *matHeaderCellDef>Data Saida</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Data de Saida</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.data.split("T")[0].split("-").reverse().join("/")}} {{element.data.split("T")[1].split(".")[0]}}</mat-cell>
       </ng-container>
 

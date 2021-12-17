@@ -42,7 +42,7 @@ export class TipoVacinaCreateComponent implements OnInit {
   }
 
   createTipoVacina(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.logiService.getUsuarioLogado() == true){
+    if(this.logiService.getStatus() == true){
       if(this.tipoVacina.nome !== '' && this.tipoVacina.descricao !== '') {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;

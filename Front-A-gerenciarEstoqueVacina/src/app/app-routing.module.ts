@@ -9,6 +9,7 @@ import { LoteCreateComponent } from "./views/lote/lote-create/lote-create.compon
 import {UsuarioComponent} from "./components/template/usuario/usuario.component";
 import {UsuarioReadComponent} from "./views/usuario/usuario-read/usuario-read.component";
 import { RegistroSaidaComponent } from "./views/Registro/registro-saida/registro-saida.component";
+import { RegistroEntradaComponent } from "./views/Registro/registro-entrada/registro-entrada.component";
 
 const routes: Routes = [
   {
@@ -44,8 +45,12 @@ const routes: Routes = [
     component: UsuarioReadComponent
   },
   {
-    path:"registrodesaida",
+    path:"registro-de-saida",
     component: RegistroSaidaComponent
+  },
+  {
+    path:"registro-de-entrada",
+    component: RegistroEntradaComponent
   }
 
 

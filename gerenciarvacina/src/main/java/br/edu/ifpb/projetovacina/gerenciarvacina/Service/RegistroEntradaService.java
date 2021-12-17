@@ -1,31 +1,46 @@
 package br.edu.ifpb.projetovacina.gerenciarvacina.Service;
 
-import br.edu.ifpb.projetovacina.gerenciarvacina.Model.Fornecedor;
-import br.edu.ifpb.projetovacina.gerenciarvacina.Model.LoteVacina;
-import br.edu.ifpb.projetovacina.gerenciarvacina.Model.TipoVacina;
-import br.edu.ifpb.projetovacina.gerenciarvacina.Repository.FornecedorRepository;
-import br.edu.ifpb.projetovacina.gerenciarvacina.Repository.RegistroEntradaRepository;
-import br.edu.ifpb.projetovacina.gerenciarvacina.Repository.TipoVacinaRepository;
+import br.edu.ifpb.projetovacina.gerenciarvacina.DTO.RegistroEntradaRequest;
+import br.edu.ifpb.projetovacina.gerenciarvacina.Model.RegistroEntrada;
+import br.edu.ifpb.projetovacina.gerenciarvacina.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class RegistroEntradaService {
 
     @Autowired
     private RegistroEntradaRepository registroEntradaRepository;
+    @Autowired
+    private LoteVacinaRepository loteVacinaRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private LoteVacinaService loteVacinaService;
 
 
+    public List<RegistroEntrada> getRegistrosDeEntrada(){
+        return this.registroEntradaRepository.findAll();
+    }
 
-//    public LoteVacina toLotevacina(FornecedorRepository fornecedorRepository, TipoVacinaRepository tipoVacinaRepository){
-//        Optional<Fornecedor> fornecedor = fornecedorRepository.findById(idFornecedor);
-//        Optional<TipoVacina> Vacina = tipoVacinaRepository.findById(idVacina);
-//
-//        LoteVacina loteVacina = new LoteVacina(fornecedor.get(), quantidade, Vacina.get(), dataVencimento, descricao);
-//        fornecedor.get().putListLoteVacina(loteVacina);
-//        tipoVacina.get().putListLoteVacina(loteVacina);
-//        return  loteVacina;
+    public RegistroEntrada getRegistroDeEntradaPorId(Long idRegistroEntrada){
+        return this.registroEntradaRepository.findById(idRegistroEntrada).orElse(null);
+    }
+
+    @Transactional
+    public RegistroEntrada inserirRegistro(RegistroEntradaRequest registroEntradaRequest){
+        RegistroEntrada registroDeEntrada = this.registroEntradaRepository.save(registroEntradaRequest.
+                toRegistroEntrada(usuarioRepository, loteVacinaRepository, loteVacinaService));
+        return registroDeEntrada;
+    }
+
+//    @Transactional
+//    public RegistroEntrada inserirRegistro(RegistroEntrada registroEntrada){
+//        RegistroEntrada registroDeEntrada = this.registroEntradaRepository.save(registroEntrada);
+//        return registroDeEntrada;
 //    }
+
 }

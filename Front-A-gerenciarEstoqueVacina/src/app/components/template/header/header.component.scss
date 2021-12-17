@@ -1,6 +1,5 @@
 .header{
   display: flex;
-  align-items: center;
   background: #076585;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #fff, #076585);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #fff, #076585); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -21,10 +20,16 @@
   padding-left: 20px;
 }
 
-.liberaAcesso{
-  position: absolute;
-  left: 90%;
+
+.div-sessao{
+  position: fixed;
+  margin-left: 85%;
 }
-.liberaAcesso a{
-  color: #FFFFFF;
+
+.liberaAcesso{
+  margin-right: 10px;
+}
+
+.logout{
+  margin-left: 10px;
 }

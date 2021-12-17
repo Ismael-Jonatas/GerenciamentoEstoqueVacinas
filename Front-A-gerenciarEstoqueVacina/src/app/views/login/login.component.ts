@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
     isAdmin:false,
   }
 
+
   constructor(private loginService: LoginService, private router: Router ) { }
 
   ngOnInit(): void {
@@ -28,18 +29,16 @@ export class LoginComponent implements OnInit {
   fazerLogin():void{
     let usuarioLogado = this.loginService.fazerLogin(this.usuario).subscribe((usuarioLogado)=>{
       if(usuarioLogado.isAdmin == true){
-          this.loginService.autenticaUsuarioLogado(true)
+          this.loginService.autenticaUsuarioLogado(true, usuarioLogado, usuarioLogado.id)
           this.loginService.showMessage("Logado com Sucesso!")
           this.router.navigate(['/'])
-          console.log(usuarioLogado)
         }else if (usuarioLogado.isAdmin == false){
           this.loginService.showMessage("Logado com Sucesso!")
-          this.loginService.autenticaUsuarioLogado(false)
-        this.router.navigate(['/'])
-          console.log(usuarioLogado)
+          this.loginService.autenticaUsuarioLogado(false, usuarioLogado, usuarioLogado.id)
+          this.router.navigate(['/'])
         }else {
           this.loginService.showMessage("Usuario Inexistente!")
-          console.log(usuarioLogado)
+          this.loginService.autenticaUsuarioLogado(false, usuarioLogado, usuarioLogado.id)
       }
 
     })

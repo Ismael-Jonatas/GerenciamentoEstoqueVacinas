@@ -11,6 +11,16 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class LoginService {
 
   private usuarioAutenticado: boolean = false;
+  private idUsuario: number = 0;
+
+  usuarioLogado: Usuario = {
+    id:0,
+    nome:'',
+    cpf:'',
+    matricula:'',
+    senha:'',
+    isAdmin:false,
+  }
 
   baseUrl = "http://localhost:8080/login"
 
@@ -20,7 +30,7 @@ export class LoginService {
 
   showMessage(msg: string):void{
     this.snackBar.open(msg,'X', {duration:3000,
-      horizontalPosition:"right",
+      horizontalPosition:"center",
       verticalPosition:"top"})
   }
 
@@ -28,12 +38,27 @@ export class LoginService {
     return this.http.post<Usuario>(this.baseUrl, usuario);
   }
 
-  autenticaUsuarioLogado(stausAdmin: boolean):void{
+  autenticaUsuarioLogado(stausAdmin: boolean, usuario:Usuario, idUsuario: number | undefined):void{
+    if(idUsuario != undefined){
+      this.idUsuario = idUsuario;
+    }
     this.usuarioAutenticado = stausAdmin;
+    this.usuarioLogado = usuario;
 }
 
-  getUsuarioLogado():Boolean{
+  getStatus():Boolean{
     return this.usuarioAutenticado;
   }
+
+  getUsuarioLogado():Usuario{
+    console.log(this.usuarioLogado)
+    return  this.usuarioLogado;
+  }
+
+  getIdUsuarioLogado():number{
+    return this.idUsuario;
+  }
+
+
 }
 

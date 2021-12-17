@@ -24,7 +24,7 @@ export class UsuarioCreateComponent implements OnInit {
   }
 
   createUser():void{
-    if (this.loginService.getUsuarioLogado() == true){
+    if (this.loginService.getStatus() == true){
       this.usuarioService.create(this.usuario).subscribe(()=>{
         this.usuarioService.showMessage("Usuário Cadastrado!")
         this.router.navigate(['/login'])
