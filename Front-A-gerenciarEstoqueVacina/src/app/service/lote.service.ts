@@ -1,6 +1,7 @@
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpClient} from "@angular/common/http";
 import {Lote} from "../model/lote.model";
+import {LoteCreate} from "../model/loteCreate.model";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 
@@ -20,8 +21,18 @@ export class LoteService{
                                                   verticalPosition:"top"})
   }
 
-  create(lote: Lote): Observable<Lote>{
+  create(lote: LoteCreate): Observable<Lote>{
     return this.http.post<Lote>(this.baseUrl, lote)
+  }
+
+  read():Observable<Lote[]>{
+    const url = `${this.baseUrl}s`
+    return this.http.get<Lote[]>(url)
+  }
+
+  readById(id:string | null):Observable<Lote>{
+    const url = `${this.baseUrl}/${id}`
+    return this.http.get<Lote>(url)
   }
 
 }

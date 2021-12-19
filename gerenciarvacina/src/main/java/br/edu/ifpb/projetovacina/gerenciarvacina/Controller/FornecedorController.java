@@ -20,7 +20,7 @@ public class FornecedorController {
         return this.fornecedorService.getFornecedores();
     }
 
-    @GetMapping("/fornecedores/{id}")
+    @GetMapping("/fornecedor/{id}")
     public Fornecedor getFornecedorId(@PathVariable("id") Long idFornecedor){
         return this.fornecedorService.getFornecedorId(idFornecedor);
     }
@@ -30,12 +30,12 @@ public class FornecedorController {
         return this.fornecedorService.inserirOuAtualizar(fornecedor);
     }
 
-    @PutMapping("/fornecedores/{id}")
+    @PutMapping("/fornecedor/{id}")
     public  Fornecedor atualizarFornecedor(@RequestBody Fornecedor fornecedor){
         return this.fornecedorService.inserirOuAtualizar(fornecedor);
     }
 
-    @DeleteMapping("/fornecedores/{id}")
+    @DeleteMapping("/fornecedor/{id}")
     public void deletarFornecedor(@PathVariable("id") Long idFornecedor){
         this.fornecedorService.apagarFonecedor(idFornecedor);
     }

@@ -1,0 +1,51 @@
+<div class="div-user">
+  <header>
+    <h3>Registros de Entradas</h3>
+    <mat-form-field class="input-pesquisar" appearance="fill">
+      <mat-label>Pesquisar por Registro:</mat-label>
+      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o registro desejado">
+    </mat-form-field>
+
+  </header>
+
+  <div class="content">
+    <mat-table #table [dataSource]="filterRegistroEntrada">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="data">
+        <mat-header-cell *matHeaderCellDef>Data de Entrada</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.data.split("T")[0].split("-").reverse().join("/")}} {{element.data.split("T")[1].split(".")[0]}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.descricao}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="quantidade">
+        <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.quantidade}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idLote">
+        <mat-header-cell *matHeaderCellDef>Lote</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.idLote.id}} - {{element.idLote.descricao}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idUsuario">
+        <mat-header-cell *matHeaderCellDef>Usuario</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.idUsuario.id}} - {{element.idUsuario.nome}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <p *ngIf="filterRegistroEntrada.length === 0">Nenhum tipo Resgistro de Entrada encontrado.</p>
+  </div>
+</div>

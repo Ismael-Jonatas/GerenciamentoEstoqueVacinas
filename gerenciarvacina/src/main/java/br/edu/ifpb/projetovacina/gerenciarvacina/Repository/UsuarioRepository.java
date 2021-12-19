@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
+    public boolean existsUsuarioByMatriculaAndSenha(String matricula, String Senha);
+
+
+    public Usuario findUsuarioByMatricula(String matricula);
 }

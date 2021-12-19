@@ -1,34 +1,99 @@
-<div class="div-lote">
-  <mat-card class="card-lote">
-    <mat-card-title>Cadastrar Lote</mat-card-title>
-    <form action="">
-      <mat-form-field  id="inputData">
-        <input  matInput placeholder="Data"  name="dataVencimento">
+<div class="div-user">
+  <div *ngIf="flagShowPopup" #popUpBox class="popup" (click)="clickPoUp($event,popUpBox)">
+    <mat-card class="card-user">
+      <mat-card-title>Adicionar Lote</mat-card-title>
+
+      <form action="">
+        <mat-form-field  id="inputData">
+          <input  matInput placeholder="Data de Vencimento" type="datetime-local" [(ngModel)]="lote.dataVencimento" name="dataVencimento">
+        </mat-form-field>
+        <mat-form-field  id="inputDescricao">
+          <input  matInput placeholder="Descrição"  [(ngModel)]="lote.descricao" name="descricao">
+        </mat-form-field>
+        <mat-form-field  id="inputQuantidade">
+          <input  matInput placeholder="Quantidade" [(ngModel)]="lote.quantidade"  name="quantidade">
+        </mat-form-field>
+      </form>
+
+      <mat-form-field appearance="fill" class="selectfornecedor">
+        <mat-label>Selecione o Fornecedor</mat-label>
+        <mat-select [(ngModel)]="lote.idFornecedor" name="fornecedor">
+          <mat-option *ngFor="let fornecedor of fornecedores"  [value]="fornecedor.id">{{fornecedor.nome}}</mat-option>
+        </mat-select>
       </mat-form-field>
-      <mat-form-field  id="inputDescricao">
-        <input  matInput placeholder="Descrição"  name="dataVencimento">
+
+      <mat-form-field appearance="fill" class="selectvacina">
+        <mat-label>Selecione a Vacina</mat-label>
+        <mat-select [(ngModel)]="lote.idTipoVacina" name="vacina">
+          <mat-option *ngFor="let tipoVacina of tiposVacina"  [value]="tipoVacina.id">{{tipoVacina.nome}}</mat-option>
+        </mat-select>
       </mat-form-field>
-      <mat-form-field  id="inputQuantidade">
-        <input  matInput placeholder="Quantidade"  name="dataVencimento">
-      </mat-form-field>
-    </form>
 
-<!--    <mat-form-field appearance="fill">-->
-<!--      <mat-label>Selecione o Fornecedor</mat-label>-->
-<!--      <mat-select [(ngModel)]="lotevacina.idFornecedor" name="loja">-->
-<!--        <mat-option *ngFor="let fornecedor of fornecedores"  [value]="fornecedor.id">{{fornecedor.nome}}</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
+      <button mat-raised-button #buttonSalvar (click)="createLote(buttonSalvar, buttonCancelar)"  color="primary" >Salvar</button>
+      <button mat-raised-button #buttonCancelar (click)="showPopUp()" >Cancelar</button>
+    </mat-card>
+  </div>
 
-<!--    <mat-form-field appearance="fill">-->
-<!--      <mat-label>Selecione a Vacina</mat-label>-->
-<!--      <mat-select [(ngModel)]="Vacina.idTipoVacina" name="categoria">-->
-<!--        <mat-option *ngFor="let vacina of vacinas"  [value]="vacina.id">{{vacina.nome}}</mat-option>-->
-<!--      </mat-select>-->
-<!--    </mat-form-field>-->
+  <header>
 
+    <div class="row-add">
+      <h3>Lotes</h3>
 
-    <button mat-raised-button (click)="createLoteVacina()"  color="primary" >Salvar</button>
-    <button mat-raised-button (click)="cancelCadastro()" >Cancelar</button>
-  </mat-card>
+      <button (click)="showPopUp()" mat-fab color="primary" aria-label="Adicionar novo fornecedor">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <mat-form-field class="input-pesquisar" appearance="fill">
+      <mat-label>Pesquisar por lote:</mat-label>
+      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o lote desejado">
+    </mat-form-field>
+
+    <section class="filter-checkbox">
+      <mat-checkbox (change)="search(inputSearch)" [(ngModel)]="lotesEmEstoque">Exibir em estoque</mat-checkbox>
+      <mat-checkbox (change)="search(inputSearch)" [(ngModel)]="quantidadeVacinasFornecedor">Lotes por fornecedor e tipo</mat-checkbox>
+    </section>
+
+  </header>
+
+  <div class="content">
+    <mat-table #table [dataSource]="filterLotes">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="dataVencimento">
+        <mat-header-cell *matHeaderCellDef>Data Vencimento</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.dataVencimento.split("T")[0].split("-").reverse().join("/")}} {{element.dataVencimento.split("T")[1].split(".")[0]}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="descricao">
+        <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.descricao}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="quantidade">
+        <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.quantidade}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="fornecedor">
+        <mat-header-cell *matHeaderCellDef>Fornecedor</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.idFornecedor.id}} - {{element.idFornecedor.nome}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="tipo">
+        <mat-header-cell *matHeaderCellDef>Tipo Vacina</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.idTipo.id}} - {{element.idTipo.nome}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="filterDisplayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: filterDisplayedColumns;"></mat-row>
+
+    </mat-table>
+
+    <p *ngIf="filterLotes.length === 0">Nenhum tipo de vacina encontrado.</p>
+  </div>
 </div>

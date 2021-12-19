@@ -21,7 +21,7 @@ public class TipoVacinaController {
     }
 
     @GetMapping("/tipovacina/{id}")
-    public TipoVacina getTipoVacinaId(@PathVariable Long idTipoVacina){
+    public TipoVacina getTipoVacinaId(@PathVariable("id") Long idTipoVacina){
         return this.tipoVacinaService.getTipoVacinaId(idTipoVacina);
     }
 

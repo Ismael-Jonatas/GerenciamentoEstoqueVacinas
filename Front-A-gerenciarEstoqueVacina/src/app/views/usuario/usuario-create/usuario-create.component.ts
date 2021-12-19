@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Usuario} from "../../../model/usuario.model";
 import {UsuarioService} from "../../../service/usuario.service";
 import {Router} from "@angular/router";
+import {LoginService} from "../../../service/login.service";
 
 @Component({
   selector: 'app-usuario-create',
@@ -17,16 +18,21 @@ export class UsuarioCreateComponent implements OnInit {
     senha:'',
     isAdmin:false,
   }
-  constructor(private usuarioService: UsuarioService, private router: Router) { }
+  constructor(private usuarioService: UsuarioService, private router: Router, private loginService: LoginService) { }
 
   ngOnInit(): void {
   }
 
   createUser():void{
-    this.usuarioService.create(this.usuario).subscribe(()=>{
-      this.usuarioService.showMessage("Usuário Cadastrado!")
-      this.router.navigate(['/login'])
-    })
+    if (this.loginService.getStatus() == true){
+      this.usuarioService.create(this.usuario).subscribe(()=>{
+        this.usuarioService.showMessage("Usuário Cadastrado!")
+        this.router.navigate(['/login'])
+      })
+    }else{
+      this.usuarioService.showMessage("Você não Possui Privilégios!")
+    }
+
   }
 
   cancelCadastro():void{

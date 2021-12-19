@@ -1,12 +1,6 @@
-<mat-sidenav-container class="menu-container">
+<mat-sidenav-container class="menu-container" >
   <mat-sidenav class="barra" mode="side" opened>
     <mat-nav-list class="nav-list">
-      <a mat-list-item routerLink="/login">
-        <i class="material-icons">
-          person
-        </i>
-        Login
-      </a>
       <a mat-list-item routerLink="/usuario">
         <i class="material-icons">
           person_add
@@ -32,6 +26,17 @@
         <img class="logo" src="/assets/img/logo.png" alt="logo">
         Lote
       </a>
+
+      <a mat-list-item routerLink="/registro-de-entrada">
+        <mat-icon class="logo">assignment</mat-icon>
+        Registros de Entradas
+      </a>
+
+      <a mat-list-item routerLink="/registro-de-saida">
+        <mat-icon class="logo">assignment</mat-icon>
+        Registrar Saida
+      </a>
+
 
     </mat-nav-list>
   </mat-sidenav>

@@ -1,19 +1,19 @@
 <div class="div-user">
-  <div *ngIf="flagShowPopup" class="popup">
+  <div *ngIf="flagShowPopup" #popUpBox class="popup" (click)="clickPoUp($event,popUpBox)">
     <mat-card class="card-user">
-      <mat-card-title>Tipos de Vacinas</mat-card-title>
+      <mat-card-title>Adicionar Tipo de Vacina</mat-card-title>
       <form action="">
         <mat-form-field id="inputName">
-          <input matInput placeholder="Nome" [(ngModel)]="vacina.nome" name="nome">
+          <input matInput placeholder="Nome" [(ngModel)]="tipoVacina.nome" name="nome">
         </mat-form-field>
 
         <mat-form-field id="inputDescricao">
-          <input matInput placeholder="Descrição" [(ngModel)]="vacina.descricao" name="descricao">
+          <input matInput placeholder="Descrição" [(ngModel)]="tipoVacina.descricao" name="descricao">
         </mat-form-field>
 
       </form>
-      <button mat-raised-button (click)="createTipoVacina()"  color="primary" >Salvar</button>
-      <button mat-raised-button (click)="cancelCadastro()" >Cancelar</button>
+      <button mat-raised-button #buttonSalvar (click)="createTipoVacina(buttonSalvar, buttonCancelar)"  color="primary" >Salvar</button>
+      <button mat-raised-button #buttonCancelar (click)="showPopUp()" >Cancelar</button>
     </mat-card>
   </div>
 
@@ -34,7 +34,7 @@
 
   </header>
 
-  <div class="listVacinas">
+  <div class="content">
     <mat-table #table [dataSource]="filterTiposVacinas">
 
       <ng-container matColumnDef="id">
@@ -57,7 +57,7 @@
 
     </mat-table>
 
-    <p *ngIf="filterTiposVacinas.length === 0">Nenhum fornecedor encontrado.</p>
+    <p *ngIf="filterTiposVacinas.length === 0">Nenhum tipo de vacina encontrado.</p>
   </div>
 </div>
 

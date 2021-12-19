@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,12 +20,21 @@ import { MatButtonModule } from "@angular/material/button";
 import { FormsModule } from "@angular/forms";
 import { MatInputModule } from "@angular/material/input";
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { UsuarioCreateComponent } from './views/usuario/usuario-create/usuario-create.component';
-import {FornecedorCreateComponent} from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
-import {TipoVacinaCreateComponent} from "./views/vacina/vacina-create/vacina-create.component";
-import {LoteCreateComponent} from "./views/lote/lote-create/lote-create.component";
-import {MatSelectModule} from "@angular/material/select";
-import {MatOptionModule} from "@angular/material/core";
+import { FornecedorCreateComponent } from "./views/fornecedor/fornecedor-create/fornecedor-create.component";
+import { TipoVacinaCreateComponent } from "./views/vacina/vacina-create/vacina-create.component";
+import { LoteCreateComponent } from "./views/lote/lote-create/lote-create.component";
+
+import { MatSelectModule } from "@angular/material/select";
+import { MatOptionModule } from "@angular/material/core";
+
+import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
+import { UsuarioComponent } from './components/template/usuario/usuario.component';
+import { LoginService } from './service/login.service';
+import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro-saida.component';
+import { RegistroEntradaComponent } from './views/Registro/registro-entrada/registro-entrada.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +47,12 @@ import {MatOptionModule} from "@angular/material/core";
     UsuarioCreateComponent,
     FornecedorCreateComponent,
     TipoVacinaCreateComponent,
-    LoteCreateComponent
+    LoteCreateComponent,
+    UsuarioReadComponent,
+    UsuarioComponent,
+    LoteCreateComponent,
+    RegistroSaidaComponent,
+    RegistroEntradaComponent
   ],
   imports: [
     BrowserModule,
@@ -58,9 +71,11 @@ import {MatOptionModule} from "@angular/material/core";
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatTableModule
+    MatTableModule,
+    MatCheckboxModule
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -4,7 +4,16 @@
   line-height: 1.5;
 }
 
-.home{
-  margin-left: 15px;
-  background-color: white;
+//.home{
+//  display: flex;
+//  align-items: center;
+//  margin-left: 80px;
+//  background-color: white;
+//}
+
+.div-home{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
+

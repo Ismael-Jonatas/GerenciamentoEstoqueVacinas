@@ -1,7 +1,11 @@
+import { Fornecedor } from './fornecedor.model';
+import { TipoVacina } from './tipoVacina.model';
+
 export interface Lote{
+  id?: number
   dataVencimento: Date
-  descricao: String
-  quantidade: Number
-  idFornecedor: number
-  idTipoVacina: number
+  descricao: string
+  quantidade: number
+  idFornecedor: Fornecedor
+  idTipo: TipoVacina
 }
