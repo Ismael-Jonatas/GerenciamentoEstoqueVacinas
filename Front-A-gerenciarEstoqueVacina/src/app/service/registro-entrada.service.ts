@@ -10,8 +10,8 @@ import { ToListagemDeRegistroEntrada } from "../model/ToListagemDeRegistroEntrad
 })
 export class RegistroEntradaService {
 
-  baseUrl = "http://localhost:8080/registro-de-entrada"
-  baseUrl2 = "http://localhost:8080/registros-de-entradas"
+  baseUrl = "https://gerenciarvacina.herokuapp.com/registro-de-entrada"
+  baseUrl2 = "https://gerenciarvacina.herokuapp.com/registros-de-entradas"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 

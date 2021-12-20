@@ -18,16 +18,20 @@ export class UsuarioCreateComponent implements OnInit {
     senha:'',
     isAdmin:false,
   }
+  loaded: boolean = false;
   constructor(private usuarioService: UsuarioService, private router: Router, private loginService: LoginService) { }
 
   ngOnInit(): void {
+    this.loginService.verificaLogin().then(isLogado => {
+      this.loaded = true;
+    });
   }
 
   createUser():void{
     if (this.loginService.getStatus() == true){
       this.usuarioService.create(this.usuario).subscribe(()=>{
-        this.usuarioService.showMessage("Usuário Cadastrado!")
-        this.router.navigate(['/login'])
+        this.usuarioService.showMessage("Usuário Cadastrado!");
+        window.location.reload();
       })
     }else{
       this.usuarioService.showMessage("Você não Possui Privilégios!")

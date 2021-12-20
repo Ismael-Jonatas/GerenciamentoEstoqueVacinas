@@ -12,6 +12,8 @@ import {LoginService} from "../../../service/login.service";
 })
 export class FornecedorCreateComponent implements OnInit {
 
+  filterFields: string[] = ['Id','Nome','CNPJ'];
+  filterField: string = '';
   filterFornecedores: Fornecedor[] = [];
   fornecedores: Fornecedor[] = [];
   flagShowPopup = false;
@@ -20,11 +22,17 @@ export class FornecedorCreateComponent implements OnInit {
     nome: '',
     cnpj: ''
   }
+  loaded: boolean = false;
 
   constructor(private fornecedorService: FornecedorService, private router: Router, private loginService: LoginService) { }
 
   ngOnInit(): void {
-    this.getFornecedores();
+    this.loginService.verificaLogin().then(async isLogado => {
+      if(isLogado) {
+        await this.getFornecedores();
+      }
+      this.loaded = true;
+    });
   }
 
   showPopUp(): void {
@@ -48,7 +56,8 @@ export class FornecedorCreateComponent implements OnInit {
 
         this.fornecedorService.create(this.fornecedor).subscribe(()=>{
           this.fornecedorService.showMessage("Fornecedor Cadastrado!");
-          this.router.navigate(['/fornecedor'])
+          this.showPopUp();
+          this.getFornecedores();
         })
       } else {
         this.fornecedorService.showMessage("Preencha todos os campos!");
@@ -59,17 +68,28 @@ export class FornecedorCreateComponent implements OnInit {
   }
 
   search(input: HTMLInputElement) {
-    const searchText = input.value;
+    const searchText = input.value.trim();
     this.filterFornecedores = this.fornecedores.filter(fornecedor => {
 
       let validId = false;
       if(fornecedor.id !== undefined) {
-        validId = fornecedor.id.toString().includes(searchText.toLowerCase());
+        const validText = fornecedor.id.toString().includes(searchText.toLowerCase());
+        validId = validText && this.filterField === "id" || validText && this.filterField === "";
       }
-      const validName = fornecedor.nome.toLowerCase().includes(searchText.toLowerCase());
-      const validCNPJ = fornecedor.cnpj.toLowerCase().includes(searchText.toLowerCase());
 
-      return validId || validName || validCNPJ;
+      let validNome = false;
+      if(fornecedor.nome !== undefined) {
+        const validText = fornecedor.nome.toLowerCase().includes(searchText.toLowerCase());
+        validNome = validText && this.filterField === "nome" || validText && this.filterField === "";
+      }
+
+      let validCNPJ = false;
+      if(fornecedor.cnpj !== undefined) {
+        const validText = fornecedor.cnpj.toLowerCase().includes(searchText.toLowerCase());
+        validCNPJ = validText && this.filterField === "cnpj" || validText && this.filterField === "";
+      }
+
+      return validId || validNome || validCNPJ;
     });
   }
 

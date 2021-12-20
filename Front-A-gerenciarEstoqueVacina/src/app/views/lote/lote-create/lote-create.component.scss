@@ -89,3 +89,16 @@ header {
   left: 0;
   z-index: 99999999999;
 }
+
+.filter-box {
+  display: flex;
+  justify-content: space-between;
+
+  .input-pesquisar {
+    margin-right: 10px;
+  }
+}
+
+mat-spinner {
+  margin: auto;
+}

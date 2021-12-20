@@ -12,6 +12,8 @@ import {LoginService} from "../../../service/login.service";
 })
 export class TipoVacinaCreateComponent implements OnInit {
 
+  filterFields: string[] = ['Id','Nome','Descrição'];
+  filterField: string = '';
   filterTiposVacinas: TipoVacina[] = [];
   tipoVacinas: TipoVacina[] = [];
   flagShowPopup = false;
@@ -21,11 +23,17 @@ export class TipoVacinaCreateComponent implements OnInit {
     descricao:'',
     loteVacina: []
   }
+  loaded: boolean = false;
 
-  constructor(private tipoVacinaService: TipoVacinaService , private router: Router, private logiService:LoginService) { }
+  constructor(private tipoVacinaService: TipoVacinaService , private router: Router, private loginService:LoginService) { }
 
   ngOnInit(): void {
-    this.getTiposVacina();
+    this.loginService.verificaLogin().then(async isLogado => {
+      if(isLogado) {
+        await this.getTiposVacina();
+      }
+      this.loaded = true;
+    });
   }
 
   showPopUp(): void {
@@ -42,14 +50,15 @@ export class TipoVacinaCreateComponent implements OnInit {
   }
 
   createTipoVacina(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.logiService.getStatus() == true){
+    if(this.loginService.getStatus() == true){
       if(this.tipoVacina.nome !== '' && this.tipoVacina.descricao !== '') {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
 
         this.tipoVacinaService.create(this.tipoVacina).subscribe(()=>{
           this.tipoVacinaService.showMessage("Tipo de Vacina Cadastrado!")
-          this.router.navigate(['/tipovacina'])
+          this.getTiposVacina();
+          this.showPopUp();
         })
       } else {
         this.tipoVacinaService.showMessage("Preencha todos os campos!")
@@ -65,10 +74,21 @@ export class TipoVacinaCreateComponent implements OnInit {
 
       let validId = false;
       if(tipoVacina.id !== undefined) {
-        validId = tipoVacina.id.toString().includes(searchText.toLowerCase());
+        const validText = tipoVacina.id.toString().includes(searchText.toLowerCase());
+        validId = validText && this.filterField === "id" || validText && this.filterField === "";
       }
-      const validName = tipoVacina.nome.toLowerCase().includes(searchText.toLowerCase());
-      const validDescription = tipoVacina.descricao.toLowerCase().includes(searchText.toLowerCase());
+
+      let validName = false;
+      if(tipoVacina.nome !== undefined) {
+        const validText = tipoVacina.nome.toLowerCase().includes(searchText.toLowerCase());
+        validName = validText && this.filterField === "nome" || validText && this.filterField === "";
+      }
+
+      let validDescription = false;
+      if(tipoVacina.descricao !== undefined) {
+        const validText = tipoVacina.descricao.toLowerCase().includes(searchText.toLowerCase());
+        validDescription = validText && this.filterField === "descricao" || validText && this.filterField === "";
+      }
 
       return validId || validName || validDescription;
     });

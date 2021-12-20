@@ -9,7 +9,6 @@ import {TipoVacina} from "../../../model/tipoVacina.model";
 import {Lote} from "../../../model/lote.model";
 import {LoteCreate} from "../../../model/loteCreate.model";
 import {LoginService} from "../../../service/login.service";
-import { RegistroEntrada } from "../../../model/registroEntrada";
 import { RegistroEntradaService } from "../../../service/registro-entrada.service";
 import {ToListagemDeRegistroEntrada} from "../../../model/ToListagemDeRegistroEntrada";
 
@@ -23,6 +22,8 @@ import {ToListagemDeRegistroEntrada} from "../../../model/ToListagemDeRegistroEn
 export class LoteCreateComponent implements OnInit {
 
   filterLotes: Lote[] = [];
+  filterFields: string[] = ['Id','Data Vencimento','Descrição','Quantidade','Fornecedor','Tipo Vacina'];
+  filterField: string = '';
   lotes: Lote[] = [];
   flagShowPopup = false;
   displayedColumns: string[] = ['id', 'dataVencimento', 'descricao','quantidade','fornecedor','tipo'];
@@ -38,15 +39,21 @@ export class LoteCreateComponent implements OnInit {
   tiposVacina: TipoVacina[] = [];
   lotesEmEstoque: boolean = false;
   quantidadeVacinasFornecedor: boolean = false;
+  loaded: boolean = false;
 
 
 
   constructor(private registroEntradaService: RegistroEntradaService, private loginService:LoginService ,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getLotes();
-    this.getTiposVacina();
-    this.getFornecedores();
+    this.loginService.verificaLogin().then(async isLogado => {
+      if(isLogado) {
+        await this.getLotes();
+        await this.getTiposVacina();
+        await this.getFornecedores();
+      }
+      this.loaded = true;
+    });
   }
 
   showPopUp(): void {
@@ -79,9 +86,6 @@ export class LoteCreateComponent implements OnInit {
         buttonCancelar.disabled = true;
 
         let loteSalvo = this.loteService.create(this.lote).subscribe((loteSalvo)=>{
-          this.loteService.showMessage("Lote Cadastrado!")
-          this.router.navigate(['/lotevacina'])
-          console.log(loteSalvo)
           this.createRegistroEntrada(loteSalvo.id ,loteSalvo.quantidade, loteSalvo.descricao)
 
         })
@@ -107,8 +111,9 @@ export class LoteCreateComponent implements OnInit {
         descricao: descricao
       }
       let salavadndo = this.registroEntradaService.create(registroEntrada).subscribe((salvando)=>{
-        console.log("Salvou????")
-        console.log(salavadndo)
+        this.loteService.showMessage("Lote Cadastrado!");
+        this.showPopUp();
+        this.getLotes();
       })
     }else{
       this.registroEntradaService.showMessage("Lote ou Usário inexistente")
@@ -117,7 +122,7 @@ export class LoteCreateComponent implements OnInit {
   }
 
   search(input: HTMLInputElement) {
-    const searchText = input.value;
+    const searchText = input.value.trim();
 
     if(this.quantidadeVacinasFornecedor) {
       this.filterDisplayedColumns = this.displayedColumns.filter(item => !["id","dataVencimento","descricao"].includes(item));
@@ -145,34 +150,40 @@ export class LoteCreateComponent implements OnInit {
 
       let validId = false;
       if(lote.id !== undefined) {
-        validId = lote.id.toString().includes(searchText.toLowerCase());
+        const validText = lote.id.toString().includes(searchText.toLowerCase());
+        validId = validText && this.filterField === "id" || validText && this.filterField === "";
       }
 
       let validDate = false;
       if(lote.dataVencimento !== undefined) {
         const date = lote.dataVencimento.toString().split("T")[0].split("-").reverse().join("/");
         const hour = lote.dataVencimento.toString().split("T")[1].split(".")[0];
-        validDate = `${date} ${hour}`.includes(searchText.toLowerCase());
+        const validText = `${date} ${hour}`.includes(searchText.toLowerCase());
+        validDate = validText && this.filterField === "dataVencimento" || validText && this.filterField === "";
       }
 
       let validDescription = false;
       if(lote.descricao !== undefined) {
-        validDescription = lote.descricao.toLowerCase().includes(searchText.toLowerCase());
+        const validText = lote.descricao.toLowerCase().includes(searchText.toLowerCase());
+        validDescription = validText && this.filterField === "descricao" || validText && this.filterField === "";
       }
 
       let validCount = false;
       if(lote.quantidade !== undefined) {
-        validCount = lote.quantidade.toString().toLowerCase().includes(searchText.toLowerCase());
+        const validText = lote.quantidade.toString().toLowerCase().includes(searchText.toLowerCase());
+        validCount = validText && this.filterField === "quantidade" || validText && this.filterField === "";
       }
 
       let validFornecedor = false;
       if(lote.idFornecedor !== undefined) {
-        validFornecedor = `${lote.idFornecedor.id} - ${lote.idFornecedor.nome}`.toLowerCase().includes(searchText.toLowerCase());
+        const validText = `${lote.idFornecedor.id} - ${lote.idFornecedor.nome}`.toLowerCase().includes(searchText.toLowerCase());
+        validFornecedor = validText && this.filterField === "fornecedor" || validText && this.filterField === "";
       }
 
       let validTipoVacina = false;
       if(lote.idTipo !== undefined) {
-        validTipoVacina = `${lote.idTipo.id} - ${lote.idTipo.nome}`.toLowerCase().includes(searchText.toLowerCase());
+        const validText = `${lote.idTipo.id} - ${lote.idTipo.nome}`.toLowerCase().includes(searchText.toLowerCase());
+        validTipoVacina = validText && this.filterField === "tipo" || validText && this.filterField === "";
       }
 
       return validId || validDate || validDescription || validCount || validFornecedor || validTipoVacina;

@@ -1,4 +1,5 @@
-<div class="div-user">
+<mat-spinner *ngIf="!loaded"></mat-spinner>
+<div *ngIf="loaded" class="div-user">
   <div *ngIf="flagShowPopup" #popUpBox class="popup" (click)="clickPoUp($event,popUpBox)">
     <mat-card class="card-user">
       <mat-card-title>Adicionar Lote</mat-card-title>
@@ -44,10 +45,20 @@
       </button>
     </div>
 
-    <mat-form-field class="input-pesquisar" appearance="fill">
-      <mat-label>Pesquisar por lote:</mat-label>
-      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o lote desejado">
-    </mat-form-field>
+    <div class="filter-box">
+      <mat-form-field class="input-pesquisar" appearance="fill">
+        <mat-label>Pesquisar por lote:</mat-label>
+        <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o lote desejado">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Selecione o Filtro</mat-label>
+        <mat-select [(ngModel)]="filterField" (selectionChange)="search(inputSearch)">
+          <mat-option [value]="''">-</mat-option>
+          <mat-option *ngFor="let item of [].constructor(filterDisplayedColumns.length); let i = index"  [value]="filterDisplayedColumns[i]">{{filterFields[i]}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <section class="filter-checkbox">
       <mat-checkbox (change)="search(inputSearch)" [(ngModel)]="lotesEmEstoque">Exibir em estoque</mat-checkbox>

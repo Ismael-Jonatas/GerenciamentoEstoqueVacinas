@@ -9,7 +9,6 @@ import br.edu.ifpb.projetovacina.gerenciarvacina.DTO.LoteVacinaRequest;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/")
 public class LoteVacinaController {
 

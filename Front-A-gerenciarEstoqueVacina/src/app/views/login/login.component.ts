@@ -21,26 +21,24 @@ export class LoginComponent implements OnInit {
 
   constructor(private loginService: LoginService, private router: Router ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
 
-  }
-
-
-  fazerLogin():void{
-    let usuarioLogado = this.loginService.fazerLogin(this.usuario).subscribe((usuarioLogado)=>{
-      if(usuarioLogado.isAdmin == true){
+  fazerLogin(): void {
+    this.loginService.fazerLogin(this.usuario).subscribe((usuarioLogado)=>{
+      if(Object.values(usuarioLogado).filter(i => i !== null).length > 0) {
+        localStorage.setItem("usuarioLogado", JSON.stringify(this.usuario));
+        if (usuarioLogado.isAdmin){
           this.loginService.autenticaUsuarioLogado(true, usuarioLogado, usuarioLogado.id)
           this.loginService.showMessage("Logado com Sucesso!")
           this.router.navigate(['/'])
-        }else if (usuarioLogado.isAdmin == false){
+        } else if (!usuarioLogado.isAdmin){
           this.loginService.showMessage("Logado com Sucesso!")
           this.loginService.autenticaUsuarioLogado(false, usuarioLogado, usuarioLogado.id)
           this.router.navigate(['/'])
-        }else {
-          this.loginService.showMessage("Usuario Inexistente!")
-          this.loginService.autenticaUsuarioLogado(false, usuarioLogado, usuarioLogado.id)
+        }
+      } else {
+        this.loginService.showMessage("Usuario Inexistente!")
       }
-
     })
 
   }

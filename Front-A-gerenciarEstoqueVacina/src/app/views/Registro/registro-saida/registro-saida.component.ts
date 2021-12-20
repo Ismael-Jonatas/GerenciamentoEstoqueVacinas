@@ -16,6 +16,8 @@ import {LoginService} from "../../../service/login.service";
 })
 export class RegistroSaidaComponent implements OnInit {
 
+  filterFields: string[] = ['Id','Data de Saida','Descrição','Quantidade','Lote','Usuário'];
+  filterField: string = '';
   filterRegistroSaida: RegistroSaida[] = [];
   registroSaidas: RegistroSaida[] = [];
   flagShowPopup = false;
@@ -29,13 +31,20 @@ export class RegistroSaidaComponent implements OnInit {
   }
   lotes: Lote[] = [];
   usuarios: Usuario[] = [];
+  loaded: boolean = false;
 
   constructor(private loginService:LoginService, private loteService: LoteService, private usuarioService: UsuarioService, private registroSaidaService: RegistroDeSaidaService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getLotes();
-    this.getUsuarios();
-    this.getRegistrosSaidas();
+    this.loginService.verificaLogin().then(async isLogado => {
+      if(isLogado) {
+        await this.getLotes();
+        await this.getUsuarios();
+        await this.getRegistrosSaidas();
+      }
+
+      this.loaded = true;
+    });
   }
 
   showPopUp(): void {
@@ -75,8 +84,9 @@ export class RegistroSaidaComponent implements OnInit {
         buttonCancelar.disabled = true;
 
         this.registroSaidaService.create(this.registroSaida).subscribe(()=>{
-          this.registroSaidaService.showMessage("Registro Cadastrado!")
-          this.router.navigate(['/registrodesaida'])
+          this.registroSaidaService.showMessage("Registro Cadastrado!");
+          this.showPopUp();
+          this.getRegistrosSaidas();
         })
       } else {
         this.registroSaidaService.showMessage("Preencha todos os campos!")
@@ -92,34 +102,40 @@ export class RegistroSaidaComponent implements OnInit {
 
       let validId = false;
       if(registro.id !== undefined) {
-        validId = registro.id.toString().includes(searchText.toLowerCase());
+        const validText = registro.id.toString().includes(searchText.toLowerCase());
+        validId = validText && this.filterField === "id" || validText && this.filterField === "";
       }
 
       let validDate = false;
       if(registro.data !== undefined) {
         const date = registro.data.toString().split("T")[0].split("-").reverse().join("/");
         const hour = registro.data.toString().split("T")[1].split(".")[0];
-        validDate = `${date} ${hour}`.includes(searchText.toLowerCase());
+        const validText = `${date} ${hour}`.includes(searchText.toLowerCase());
+        validDate = validText && this.filterField === "data" || validText && this.filterField === "";
       }
 
       let validDescription = false;
       if(registro.descricao !== undefined) {
-        validDescription = registro.descricao.toLowerCase().includes(searchText.toLowerCase());
+        const validText = registro.descricao.toLowerCase().includes(searchText.toLowerCase());
+        validDescription = validText && this.filterField === "descricao" || validText && this.filterField === "";
       }
 
       let validCount = false;
       if(registro.quantidade !== undefined) {
-        validCount = registro.quantidade.toString().toLowerCase().includes(searchText.toLowerCase());
+        const validText = registro.quantidade.toString().toLowerCase().includes(searchText.toLowerCase());
+        validCount = validText && this.filterField === "quantidade" || validText && this.filterField === "";
       }
 
       let validLote = false;
       if(registro.idLote !== undefined) {
-        validLote = registro.idLote.toString().toLowerCase().includes(searchText.toLowerCase());
+        const validText = registro.idLote.toString().toLowerCase().includes(searchText.toLowerCase());
+        validLote = validText && this.filterField === "idLote" || validText && this.filterField === "";
       }
 
       let validUsuario = false;
       if(registro.idUsuario !== undefined) {
-        validUsuario = registro.idUsuario.toString().toLowerCase().includes(searchText.toLowerCase());
+        const validText = registro.idUsuario.toString().toLowerCase().includes(searchText.toLowerCase());
+        validUsuario = validText && this.filterField === "idUsuario" || validText && this.filterField === "";
       }
 
 

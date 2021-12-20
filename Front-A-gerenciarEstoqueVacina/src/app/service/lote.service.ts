@@ -11,7 +11,7 @@ import {Injectable} from "@angular/core";
 
 export class LoteService{
 
-  baseUrl = "http://localhost:8080/lotevacina"
+  baseUrl = "https://gerenciarvacina.herokuapp.com/lotevacina"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 

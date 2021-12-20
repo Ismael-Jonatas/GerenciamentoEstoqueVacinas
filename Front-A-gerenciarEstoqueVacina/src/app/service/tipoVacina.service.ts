@@ -10,7 +10,7 @@ import { Injectable } from "@angular/core";
 
 export class TipoVacinaService{
 
-  baseUrl = "http://localhost:8080/tipovacina"
+  baseUrl = "https://gerenciarvacina.herokuapp.com/tipovacina"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 

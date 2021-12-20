@@ -9,8 +9,8 @@ import {Observable} from "rxjs";
 })
 export class RegistroDeSaidaService {
 
-  baseUrl = "http://localhost:8080/registro-de-saida"
-  baseUrl2 = "http://localhost:8080/registros-de-saidas"
+  baseUrl = "https://gerenciarvacina.herokuapp.com/registro-de-saida"
+  baseUrl2 = "https://gerenciarvacina.herokuapp.com/registros-de-saidas"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 

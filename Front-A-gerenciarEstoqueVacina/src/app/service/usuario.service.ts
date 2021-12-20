@@ -10,7 +10,7 @@ import { Injectable } from "@angular/core";
 
 export class UsuarioService{
 
-  baseUrl = "http://localhost:8080/usuario"
+  baseUrl = "https://gerenciarvacina.herokuapp.com/usuario"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {
   }

@@ -29,6 +29,7 @@ import { LoteCreateComponent } from "./views/lote/lote-create/lote-create.compon
 
 import { MatSelectModule } from "@angular/material/select";
 import { MatOptionModule } from "@angular/material/core";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
 import { UsuarioComponent } from './components/template/usuario/usuario.component';
@@ -72,7 +73,8 @@ import { RegistroEntradaComponent } from './views/Registro/registro-entrada/regi
     MatSelectModule,
     MatOptionModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   providers: [LoginService],
   bootstrap: [AppComponent]

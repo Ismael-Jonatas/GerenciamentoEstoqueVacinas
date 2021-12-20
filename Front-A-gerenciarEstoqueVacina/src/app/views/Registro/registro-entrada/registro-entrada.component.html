@@ -1,10 +1,22 @@
-<div class="div-user">
+<mat-spinner *ngIf="!loaded"></mat-spinner>
+<div *ngIf="loaded" class="div-user">
   <header>
     <h3>Registros de Entradas</h3>
-    <mat-form-field class="input-pesquisar" appearance="fill">
-      <mat-label>Pesquisar por Registro:</mat-label>
-      <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o registro desejado">
-    </mat-form-field>
+
+    <div class="filter-box">
+      <mat-form-field class="input-pesquisar" appearance="fill">
+        <mat-label>Pesquisar por Registro:</mat-label>
+        <input #inputSearch (input)="search(inputSearch)" matInput placeholder="Digite o registro desejado">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Selecione o Filtro</mat-label>
+        <mat-select [(ngModel)]="filterField" (selectionChange)="search(inputSearch)">
+          <mat-option [value]="''">-</mat-option>
+          <mat-option *ngFor="let item of [].constructor(displayedColumns.length); let i = index"  [value]="displayedColumns[i]">{{filterFields[i]}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
   </header>
 
@@ -37,7 +49,7 @@
       </ng-container>
 
       <ng-container matColumnDef="idUsuario">
-        <mat-header-cell *matHeaderCellDef>Usuario</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Usuário</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.idUsuario.id}} - {{element.idUsuario.nome}}</mat-cell>
       </ng-container>
 

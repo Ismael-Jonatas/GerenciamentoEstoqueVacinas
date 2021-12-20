@@ -11,7 +11,7 @@ import {Observable} from "rxjs";
 
 export class FornecedorService{
 
-    baseUrl = "http://localhost:8080/fornecedor"
+    baseUrl = "https://gerenciarvacina.herokuapp.com/fornecedor"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 
