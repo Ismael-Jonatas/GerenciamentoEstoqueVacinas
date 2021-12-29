@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Fornecedor } from 'src/app/model/fornecedor.model';
+import { Usuario } from 'src/app/model/usuario.model';
 import { FornecedorService } from 'src/app/service/fornecedor.service';
-import {LoginService} from "../../../service/login.service";
+import { LoginPublisher } from "../../../service/login-publisher.service";
 
 @Component({
   selector: 'app-fornecedor-create',
@@ -23,16 +24,26 @@ export class FornecedorCreateComponent implements OnInit {
     cnpj: ''
   }
   loaded: boolean = false;
+  usuarioLogado: Usuario = null;
 
-  constructor(private fornecedorService: FornecedorService, private router: Router, private loginService: LoginService) { }
+  constructor(private fornecedorService: FornecedorService, private router: Router, private loginPublisher: LoginPublisher) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin().then(async isLogado => {
-      if(isLogado) {
-        await this.getFornecedores();
-      }
-      this.loaded = true;
-    });
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
+  }
+
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.updateLogado();
+    else
+      this.router.navigate(['login']);
+  }
+
+  async updateLogado() {
+    await this.getFornecedores();
+    this.loaded = true;
   }
 
   showPopUp(): void {
@@ -49,7 +60,7 @@ export class FornecedorCreateComponent implements OnInit {
   }
 
   createFornecedor(buttonSalvar: MatButton, buttonCancelar: MatButton):void {
-    if (this.loginService.getStatus() == true){
+    if (this.usuarioLogado !== null && this.usuarioLogado.isAdmin){
       if(this.fornecedor.nome !== '' && this.fornecedor.cnpj !== '') {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;

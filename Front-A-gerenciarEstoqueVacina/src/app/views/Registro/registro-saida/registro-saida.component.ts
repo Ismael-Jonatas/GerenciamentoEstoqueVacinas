@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {RegistroSaida} from "../../../model/registroSaida";
-import {Lote} from "../../../model/lote.model";
-import {LoteService} from "../../../service/lote.service";
-import {Router} from "@angular/router";
-import {Usuario} from "../../../model/usuario.model";
-import {UsuarioService} from "../../../service/usuario.service";
-import {RegistroDeSaidaService} from "../../../service/registro-de-saida.service";
-import {MatButton} from "@angular/material/button";
-import {LoginService} from "../../../service/login.service";
+import { RegistroSaida } from "../../../model/registroSaida";
+import { Lote } from "../../../model/lote.model";
+import { LoteService } from "../../../service/lote.service";
+import { Router } from "@angular/router";
+import { Usuario } from "../../../model/usuario.model";
+import { UsuarioService } from "../../../service/usuario.service";
+import { RegistroDeSaidaService } from "../../../service/registro-de-saida.service";
+import { MatButton } from "@angular/material/button";
+import { LoginPublisher } from "../../../service/login-publisher.service";
 
 @Component({
   selector: 'app-registro-saida',
@@ -31,20 +31,29 @@ export class RegistroSaidaComponent implements OnInit {
   }
   lotes: Lote[] = [];
   usuarios: Usuario[] = [];
+  usuarioLogado: Usuario = null;
   loaded: boolean = false;
 
-  constructor(private loginService:LoginService, private loteService: LoteService, private usuarioService: UsuarioService, private registroSaidaService: RegistroDeSaidaService, private router: Router) { }
+  constructor(private loginPublisher: LoginPublisher, private loteService: LoteService, private usuarioService: UsuarioService, private registroSaidaService: RegistroDeSaidaService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin().then(async isLogado => {
-      if(isLogado) {
-        await this.getLotes();
-        await this.getUsuarios();
-        await this.getRegistrosSaidas();
-      }
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
+  }
 
-      this.loaded = true;
-    });
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.updateLogado();
+    else
+      this.router.navigate(['login']);
+  }
+
+  async updateLogado() {
+    await this.getLotes();
+    await this.getUsuarios();
+    await this.getRegistrosSaidas();
+    this.loaded = true;
   }
 
   showPopUp(): void {
@@ -78,7 +87,7 @@ export class RegistroSaidaComponent implements OnInit {
 
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.loginService.getStatus() == true){
+    if(this.usuarioLogado !== null && this.usuarioLogado.isAdmin){
       if(this.registroSaida.descricao!= '' && this.registroSaida.quantidade!= 0 && this.registroSaida.data!= null && this.registroSaida.idLote!= 0 && this.registroSaida.idUsuario!= 0 ) {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
@@ -91,7 +100,7 @@ export class RegistroSaidaComponent implements OnInit {
       } else {
         this.registroSaidaService.showMessage("Preencha todos os campos!")
       }
-    }else{
+    } else {
       this.registroSaidaService.showMessage("Você não Possui Privilégios!")
     }
   }

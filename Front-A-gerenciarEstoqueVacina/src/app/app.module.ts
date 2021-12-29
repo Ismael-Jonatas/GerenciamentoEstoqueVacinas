@@ -33,7 +33,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { UsuarioReadComponent } from './views/usuario/usuario-read/usuario-read.component';
 import { UsuarioComponent } from './components/template/usuario/usuario.component';
-import { LoginService } from './service/login.service';
+import { LoginPublisher } from './service/login-publisher.service';
 import { RegistroSaidaComponent } from './views/Registro/registro-saida/registro-saida.component';
 import { RegistroEntradaComponent } from './views/Registro/registro-entrada/registro-entrada.component';
 
@@ -76,7 +76,7 @@ import { RegistroEntradaComponent } from './views/Registro/registro-entrada/regi
     MatCheckboxModule,
     MatProgressSpinnerModule
   ],
-  providers: [LoginService],
+  providers: [LoginPublisher],
   bootstrap: [AppComponent]
 })
 export class AppModule {

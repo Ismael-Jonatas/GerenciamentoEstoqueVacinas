@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/model/usuario.model';
-import { LoginService } from 'src/app/service/login.service';
+import { LoginPublisher } from 'src/app/service/login-publisher.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -9,23 +10,19 @@ import { LoginService } from 'src/app/service/login.service';
 })
 export class NavComponent implements OnInit {
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginPublisher: LoginPublisher, private router: Router) { }
 
-  usuarioLogado: Usuario = this.loginService.getUsuarioLogado();
-  usuarioLogadoStatus: boolean = this.loginService.getStatus();
+  usuarioLogado: Usuario = null;
 
   ngOnInit(): void {
-    setInterval(() => {
-      this.setUsuarioLogado();
-      this.setUsuarioLogadoStatus();
-    }, 500)
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
   }
 
-  setUsuarioLogado() {
-    this.usuarioLogado = this.loginService.getUsuarioLogado();
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(!usuarioLogado)
+      this.router.navigate(['login']);
   }
 
-  setUsuarioLogadoStatus() {
-    this.usuarioLogadoStatus = this.loginService.getStatus();
-  }
 }

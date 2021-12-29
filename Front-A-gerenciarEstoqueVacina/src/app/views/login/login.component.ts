@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from 'src/app/service/login.service';
+import { LoginPublisher } from 'src/app/service/login-publisher.service';
 import {Usuario} from "../../model/usuario.model";
 import {Router} from "@angular/router";
 
@@ -17,28 +17,29 @@ export class LoginComponent implements OnInit {
     senha:'',
     isAdmin:false,
   }
+  usuarioLogado: Usuario = null;
+  loaded: boolean = false;
 
+  constructor(private loginPublisher: LoginPublisher, private router: Router ) { }
 
-  constructor(private loginService: LoginService, private router: Router ) { }
+  ngOnInit(): void {
+    this.loginPublisher.addSubscriber(this);
+  }
 
-  ngOnInit(): void { }
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.router.navigate(['/']);
+    else
+      this.loaded = true;
+  }
 
   fazerLogin(): void {
-    this.loginService.fazerLogin(this.usuario).subscribe((usuarioLogado)=>{
-      if(Object.values(usuarioLogado).filter(i => i !== null).length > 0) {
-        localStorage.setItem("usuarioLogado", JSON.stringify(this.usuario));
-        if (usuarioLogado.isAdmin){
-          this.loginService.autenticaUsuarioLogado(true, usuarioLogado, usuarioLogado.id)
-          this.loginService.showMessage("Logado com Sucesso!")
-          this.router.navigate(['/'])
-        } else if (!usuarioLogado.isAdmin){
-          this.loginService.showMessage("Logado com Sucesso!")
-          this.loginService.autenticaUsuarioLogado(false, usuarioLogado, usuarioLogado.id)
-          this.router.navigate(['/'])
-        }
-      } else {
-        this.loginService.showMessage("Usuario Inexistente!")
-      }
+    this.loginPublisher.fazerLogin(this.usuario).then(isLogado =>{
+      if(isLogado)
+        this.loginPublisher.showMessage("Logado com Sucesso!");
+      else
+        this.loginPublisher.showMessage("Usuario Inexistente!");
     })
 
   }

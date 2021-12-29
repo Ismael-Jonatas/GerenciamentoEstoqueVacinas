@@ -1,38 +1,38 @@
 <mat-sidenav-container class="menu-container" >
   <mat-sidenav class="barra" mode="side" opened>
     <mat-nav-list class="nav-list">
-      <a *ngIf="usuarioLogado.id !== 0 && usuarioLogadoStatus" mat-list-item routerLink="/usuario">
+      <a *ngIf="usuarioLogado !== null && usuarioLogado.isAdmin" mat-list-item routerLink="/usuario">
         <i class="material-icons">
           person_add
         </i>
         Usuario
       </a>
 
-      <a *ngIf="usuarioLogado.id !== 0" mat-list-item routerLink="/fornecedor">
+      <a *ngIf="usuarioLogado !== null" mat-list-item routerLink="/fornecedor">
         <i class="material-icons">
           store
         </i>
         Fornecedor
       </a>
 
-      <a *ngIf="usuarioLogado.id !== 0" mat-list-item routerLink="/tipovacina">
+      <a *ngIf="usuarioLogado !== null" mat-list-item routerLink="/tipovacina">
         <i class="material-icons">
           colorize
         </i>
         Vacina
       </a>
 
-      <a *ngIf="usuarioLogado.id !== 0" mat-list-item routerLink="/lotevacina" >
+      <a *ngIf="usuarioLogado !== null" mat-list-item routerLink="/lotevacina" >
         <img class="logo" src="/assets/img/logo.png" alt="logo">
         Lote
       </a>
 
-      <a *ngIf="usuarioLogado.id !== 0" mat-list-item routerLink="/registro-de-entrada">
+      <a *ngIf="usuarioLogado !== null" mat-list-item routerLink="/registro-de-entrada">
         <mat-icon class="logo">assignment</mat-icon>
         Registros de Entradas
       </a>
 
-      <a *ngIf="usuarioLogado.id !== 0" mat-list-item routerLink="/registro-de-saida">
+      <a *ngIf="usuarioLogado !== null" mat-list-item routerLink="/registro-de-saida">
         <mat-icon class="logo">assignment</mat-icon>
         Registrar Saida
       </a>

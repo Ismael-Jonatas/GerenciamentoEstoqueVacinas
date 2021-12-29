@@ -3,7 +3,8 @@ import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { TipoVacina } from "../../../model/tipoVacina.model";
 import { TipoVacinaService } from "../../../service/tipoVacina.service";
-import {LoginService} from "../../../service/login.service";
+import { LoginPublisher } from "../../../service/login-publisher.service";
+import { Usuario } from 'src/app/model/usuario.model';
 
 @Component({
   selector: 'app-vacina-create',
@@ -23,17 +24,27 @@ export class TipoVacinaCreateComponent implements OnInit {
     descricao:'',
     loteVacina: []
   }
+  usuarioLogado: Usuario = null;
   loaded: boolean = false;
 
-  constructor(private tipoVacinaService: TipoVacinaService , private router: Router, private loginService:LoginService) { }
+  constructor(private tipoVacinaService: TipoVacinaService , private router: Router, private loginPublisher: LoginPublisher) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin().then(async isLogado => {
-      if(isLogado) {
-        await this.getTiposVacina();
-      }
-      this.loaded = true;
-    });
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
+  }
+
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.updateLogado();
+    else
+      this.router.navigate(['login']);
+  }
+
+  async updateLogado() {
+    await this.getTiposVacina();
+    this.loaded = true;
   }
 
   showPopUp(): void {
@@ -50,7 +61,7 @@ export class TipoVacinaCreateComponent implements OnInit {
   }
 
   createTipoVacina(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if(this.loginService.getStatus() == true){
+    if(this.usuarioLogado != null && this.usuarioLogado.isAdmin){
       if(this.tipoVacina.nome !== '' && this.tipoVacina.descricao !== '') {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
@@ -63,9 +74,8 @@ export class TipoVacinaCreateComponent implements OnInit {
       } else {
         this.tipoVacinaService.showMessage("Preencha todos os campos!")
       }
-    }else{
-      this.tipoVacinaService.showMessage("Você não Possui Privilégios!")
-    }
+    } else
+      this.tipoVacinaService.showMessage("Você não Possui Privilégios!");
   }
 
   search(input: HTMLInputElement) {

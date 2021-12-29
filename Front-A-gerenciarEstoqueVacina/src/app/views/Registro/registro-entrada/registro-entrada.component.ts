@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {RegistroEntrada} from "../../../model/registroEntrada";
-import {Lote} from "../../../model/lote.model";
-import {Usuario} from "../../../model/usuario.model";
-import {LoginService} from "../../../service/login.service";
-import {LoteService} from "../../../service/lote.service";
-import {UsuarioService} from "../../../service/usuario.service";
-import {RegistroEntradaService} from "../../../service/registro-entrada.service";
-import {Router} from "@angular/router";
+import { RegistroEntrada } from "../../../model/registroEntrada";
+import { Lote } from "../../../model/lote.model";
+import { Usuario } from "../../../model/usuario.model";
+import { LoginPublisher } from "../../../service/login-publisher.service";
+import { LoteService } from "../../../service/lote.service";
+import { UsuarioService } from "../../../service/usuario.service";
+import { RegistroEntradaService } from "../../../service/registro-entrada.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-registro-entrada',
@@ -23,27 +23,34 @@ export class RegistroEntradaComponent implements OnInit {
   lotes: Lote[] = [];
   usuarios: Usuario[] = [];
   loaded: boolean = false;
+  usuarioLogado: Usuario = null;
 
-  constructor(private loginService:LoginService, private loteService: LoteService, private usuarioService: UsuarioService, private registroEntradaService: RegistroEntradaService, private router: Router) { }
+  constructor(private loginPublisher: LoginPublisher, private loteService: LoteService, private usuarioService: UsuarioService, private registroEntradaService: RegistroEntradaService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin().then(async isLogado => {
-      if(isLogado) {
-        await this.getLotes();
-        await this.getUsuarios();
-        await this.getRegistrosSaidas();
-      }
-      this.loaded = true;
-    });
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
   }
 
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.updateLogado();
+    else
+      this.router.navigate(['login']);
+  }
+
+  async updateLogado() {
+    await this.getLotes();
+    await this.getUsuarios();
+    await this.getRegistrosSaidas();
+    this.loaded = true;
+  }
 
   async getLotes() {
-
     this.loteService.read().subscribe((lotes: Lote[]) => {
       this.lotes = lotes;
     });
-
   }
 
   async getUsuarios() {

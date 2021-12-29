@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import { Usuario } from 'src/app/model/usuario.model';
-import {LoginService} from "../../../service/login.service";
+import {LoginPublisher} from "../../../service/login-publisher.service";
 
 @Component({
   selector: 'app-header',
@@ -10,29 +10,26 @@ import {LoginService} from "../../../service/login.service";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private snackBar: MatSnackBar, private loginService: LoginService) { }
+  constructor(private snackBar: MatSnackBar, private loginPublisher: LoginPublisher) { }
 
-  usuarioLogado: Usuario = this.loginService.getUsuarioLogado();
+  usuarioLogado: Usuario = null;
 
   ngOnInit(): void {
-    setInterval(() => {
-      this.setUsuarioLogado();
-    }, 500);
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
   }
 
-  setUsuarioLogado() {
-    this.usuarioLogado = this.loginService.getUsuarioLogado();
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
   }
 
   logout():void{
-    if (this.loginService.getUsuarioLogado().id != 0){
+    if (this.usuarioLogado !== null){
+      this.loginPublisher.logout();
       this.showMessage("Sessão Encerrada!")
-      this.loginService.logout();
     } else {
       this.showMessage("Não ha usuário logado!")
     }
-
-
   }
 
   showMessage(msg: string):void{

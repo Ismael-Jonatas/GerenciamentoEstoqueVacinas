@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Usuario} from "../../../model/usuario.model";
-import {UsuarioService} from "../../../service/usuario.service";
-import {Router} from "@angular/router";
-import {LoginService} from "../../../service/login.service";
+import { Usuario } from "../../../model/usuario.model";
+import { UsuarioService } from "../../../service/usuario.service";
+import { Router } from "@angular/router";
+import { LoginPublisher } from "../../../service/login-publisher.service";
 
 @Component({
   selector: 'app-usuario-create',
@@ -18,29 +18,40 @@ export class UsuarioCreateComponent implements OnInit {
     senha:'',
     isAdmin:false,
   }
+  usuarioLogado: Usuario = null;
   loaded: boolean = false;
-  constructor(private usuarioService: UsuarioService, private router: Router, private loginService: LoginService) { }
+
+  constructor(private usuarioService: UsuarioService, private router: Router, private loginPublisher: LoginPublisher) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin().then(isLogado => {
-      this.loaded = true;
-    });
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
+  }
+
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.updateLogado();
+    else
+      this.router.navigate(['login']);
+  }
+
+  async updateLogado() {
+    this.loaded = true;
   }
 
   createUser():void{
-    if (this.loginService.getStatus() == true){
+    if (this.usuarioLogado !== null && this.usuarioLogado.isAdmin){
       this.usuarioService.create(this.usuario).subscribe(()=>{
         this.usuarioService.showMessage("Usuário Cadastrado!");
         window.location.reload();
       })
-    }else{
+    } else
       this.usuarioService.showMessage("Você não Possui Privilégios!")
-    }
-
   }
 
   cancelCadastro():void{
-    this.router.navigate(['/login'])
+    this.router.navigate(['login'])
   }
 
 }

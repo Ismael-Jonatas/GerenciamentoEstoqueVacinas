@@ -8,9 +8,10 @@ import {Fornecedor} from "../../../model/fornecedor.model";
 import {TipoVacina} from "../../../model/tipoVacina.model";
 import {Lote} from "../../../model/lote.model";
 import {LoteCreate} from "../../../model/loteCreate.model";
-import {LoginService} from "../../../service/login.service";
+import {LoginPublisher } from "../../../service/login-publisher.service";
 import { RegistroEntradaService } from "../../../service/registro-entrada.service";
 import {ToListagemDeRegistroEntrada} from "../../../model/ToListagemDeRegistroEntrada";
+import { Usuario } from 'src/app/model/usuario.model';
 
 
 
@@ -39,21 +40,29 @@ export class LoteCreateComponent implements OnInit {
   tiposVacina: TipoVacina[] = [];
   lotesEmEstoque: boolean = false;
   quantidadeVacinasFornecedor: boolean = false;
+  usuarioLogado: Usuario = null;
   loaded: boolean = false;
 
-
-
-  constructor(private registroEntradaService: RegistroEntradaService, private loginService:LoginService ,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
+  constructor(private registroEntradaService: RegistroEntradaService, private loginPublisher: LoginPublisher,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin().then(async isLogado => {
-      if(isLogado) {
-        await this.getLotes();
-        await this.getTiposVacina();
-        await this.getFornecedores();
-      }
-      this.loaded = true;
-    });
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
+  }
+
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(usuarioLogado)
+      this.updateLogado();
+    else
+      this.router.navigate(['login']);
+  }
+
+  async updateLogado() {
+    await this.getLotes();
+    await this.getTiposVacina();
+    await this.getFornecedores();
+    this.loaded = true;
   }
 
   showPopUp(): void {
@@ -80,14 +89,13 @@ export class LoteCreateComponent implements OnInit {
   }
 
   createLote(buttonSalvar: MatButton, buttonCancelar: MatButton):void{
-    if (this.loginService.getStatus() == true){
+    if (this.usuarioLogado !== null && this.usuarioLogado.isAdmin){
       if(this.lote.descricao!= '' && this.lote.quantidade!= 0 && this.lote.idFornecedor!= 0 && this.lote.idTipoVacina!= 0) {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
 
         let loteSalvo = this.loteService.create(this.lote).subscribe((loteSalvo)=>{
           this.createRegistroEntrada(loteSalvo.id ,loteSalvo.quantidade, loteSalvo.descricao)
-
         })
 
       } else {
@@ -99,12 +107,12 @@ export class LoteCreateComponent implements OnInit {
   }
 
   createRegistroEntrada(idLote: number | undefined, quantidade: number, descricao: string ):void{
-    let regastarIdUsuarioLogado = this.loginService.getIdUsuarioLogado()
+    let resgatarIdUsuarioLogado = this.usuarioLogado !== null ? this.usuarioLogado.id : null;
 
-    if (idLote != undefined && regastarIdUsuarioLogado != 0) {
+    if (idLote != undefined && resgatarIdUsuarioLogado  !== null) {
 
       let registroEntrada:  ToListagemDeRegistroEntrada = {
-        idUsuario: regastarIdUsuarioLogado,
+        idUsuario: resgatarIdUsuarioLogado,
         data: new Date(),
         idLote: idLote,
         quantidade: quantidade,
@@ -115,8 +123,8 @@ export class LoteCreateComponent implements OnInit {
         this.showPopUp();
         this.getLotes();
       })
-    }else{
-      this.registroEntradaService.showMessage("Lote ou Usário inexistente")
+    } else {
+      this.registroEntradaService.showMessage("Lote ou Usuário inexistente")
     }
 
   }

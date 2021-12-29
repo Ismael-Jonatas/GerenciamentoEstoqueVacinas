@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from 'src/app/service/login.service';
+import { LoginPublisher } from 'src/app/service/login-publisher.service';
+import { Usuario } from 'src/app/model/usuario.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +10,18 @@ import { LoginService } from 'src/app/service/login.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private loginService: LoginService) { }
+  usuarioLogado: Usuario = null;
+
+  constructor(private loginPublisher: LoginPublisher, private router: Router) { }
 
   ngOnInit(): void {
-    this.loginService.verificaLogin();
+    this.loginPublisher.addSubscriber(this);
+    this.loginPublisher.verificaLogin(this);
   }
 
+  updateSubscriber(usuarioLogado: Usuario) {
+    this.usuarioLogado = usuarioLogado;
+    if(!usuarioLogado)
+      this.router.navigate(['login']);
+  }
 }
