@@ -3,10 +3,8 @@ import { RegistroEntrada } from "../../../model/registroEntrada";
 import { Lote } from "../../../model/lote.model";
 import { Usuario } from "../../../model/usuario.model";
 import { LoginPublisher } from "../../../service/login-publisher.service";
-import { LoteService } from "../../../service/lote.service";
-import { UsuarioService } from "../../../service/usuario.service";
-import { RegistroEntradaService } from "../../../service/registro-entrada.service";
 import { Router } from "@angular/router";
+import { FacadeService } from 'src/app/service/facade.service';
 
 @Component({
   selector: 'app-registro-entrada',
@@ -25,7 +23,7 @@ export class RegistroEntradaComponent implements OnInit {
   loaded: boolean = false;
   usuarioLogado: Usuario = null;
 
-  constructor(private loginPublisher: LoginPublisher, private loteService: LoteService, private usuarioService: UsuarioService, private registroEntradaService: RegistroEntradaService, private router: Router) { }
+  constructor(private loginPublisher: LoginPublisher, private facadeService: FacadeService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginPublisher.addSubscriber(this);
@@ -48,14 +46,14 @@ export class RegistroEntradaComponent implements OnInit {
   }
 
   async getLotes() {
-    this.loteService.read().subscribe((lotes: Lote[]) => {
+    this.facadeService.read("lote").subscribe((lotes: Lote[]) => {
       this.lotes = lotes;
     });
   }
 
   async getUsuarios() {
 
-    this.usuarioService.read().subscribe((usuarios: Usuario[]) => {
+    this.facadeService.read("usuario").subscribe((usuarios: Usuario[]) => {
       this.usuarios = usuarios;
     });
 
@@ -63,7 +61,7 @@ export class RegistroEntradaComponent implements OnInit {
 
   async getRegistrosSaidas() {
 
-    this.registroEntradaService.read().subscribe((registroEntradas: RegistroEntrada[]) => {
+    this.facadeService.read("registroEntrada").subscribe((registroEntradas: RegistroEntrada[]) => {
       this.registroEntradas = registroEntradas;
       this.filterRegistroEntrada = registroEntradas;
     });

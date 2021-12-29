@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import {LoteService} from "../../../service/lote.service";
-import {TipoVacinaService} from "../../../service/tipoVacina.service";
-import {FornecedorService} from "../../../service/fornecedor.service";
-import {Router} from "@angular/router";
-import {Fornecedor} from "../../../model/fornecedor.model";
-import {TipoVacina} from "../../../model/tipoVacina.model";
-import {Lote} from "../../../model/lote.model";
-import {LoteCreate} from "../../../model/loteCreate.model";
-import {LoginPublisher } from "../../../service/login-publisher.service";
-import { RegistroEntradaService } from "../../../service/registro-entrada.service";
-import {ToListagemDeRegistroEntrada} from "../../../model/ToListagemDeRegistroEntrada";
+import { Router } from "@angular/router";
+import { Fornecedor } from "../../../model/fornecedor.model";
+import { TipoVacina } from "../../../model/tipoVacina.model";
+import { Lote } from "../../../model/lote.model";
+import { LoteCreate } from "../../../model/loteCreate.model";
+import { LoginPublisher } from "../../../service/login-publisher.service";
+import { ToListagemDeRegistroEntrada } from "../../../model/ToListagemDeRegistroEntrada";
 import { Usuario } from 'src/app/model/usuario.model';
-
-
+import { FacadeService } from 'src/app/service/facade.service';
 
 @Component({
   selector: 'app-lote-create',
@@ -43,7 +38,7 @@ export class LoteCreateComponent implements OnInit {
   usuarioLogado: Usuario = null;
   loaded: boolean = false;
 
-  constructor(private registroEntradaService: RegistroEntradaService, private loginPublisher: LoginPublisher,private loteService: LoteService, private tipoVacinaService: TipoVacinaService, private fornecedorService: FornecedorService, private router: Router) { }
+  constructor(private loginPublisher: LoginPublisher, private facadeService: FacadeService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginPublisher.addSubscriber(this);
@@ -70,20 +65,20 @@ export class LoteCreateComponent implements OnInit {
   }
 
   async getLotes() {
-    this.loteService.read().subscribe((lotes: Lote[]) => {
+    this.facadeService.read("lote").subscribe((lotes: Lote[]) => {
       this.lotes = lotes;
       this.filterLotes = lotes;
     });
   }
 
   async getTiposVacina() {
-    this.tipoVacinaService.read().subscribe((tiposVacina: TipoVacina[]) => {
+    this.facadeService.read("tipoVacina").subscribe((tiposVacina: TipoVacina[]) => {
       this.tiposVacina = tiposVacina;
     });
   }
 
   async getFornecedores() {
-    this.fornecedorService.read().subscribe((fornecedores: Fornecedor[]) => {
+    this.facadeService.read("fornecedor").subscribe((fornecedores: Fornecedor[]) => {
       this.fornecedores = fornecedores;
     });
   }
@@ -94,15 +89,15 @@ export class LoteCreateComponent implements OnInit {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
 
-        let loteSalvo = this.loteService.create(this.lote).subscribe((loteSalvo)=>{
+        this.facadeService.create("lote",this.lote).subscribe((loteSalvo)=>{
           this.createRegistroEntrada(loteSalvo.id ,loteSalvo.quantidade, loteSalvo.descricao)
         })
 
       } else {
-        this.loteService.showMessage("Preencha todos os campos!")
+        this.facadeService.showMessage("lote","Preencha todos os campos!")
       }
     }else{
-      this.loteService.showMessage("Você não Possui Privilégios!")
+      this.facadeService.showMessage("lote","Você não Possui Privilégios!")
     }
   }
 
@@ -118,13 +113,13 @@ export class LoteCreateComponent implements OnInit {
         quantidade: quantidade,
         descricao: descricao
       }
-      let salavadndo = this.registroEntradaService.create(registroEntrada).subscribe((salvando)=>{
-        this.loteService.showMessage("Lote Cadastrado!");
+      this.facadeService.create("registroEntrada",registroEntrada).subscribe((salvando)=>{
+        this.facadeService.showMessage("lote","Lote Cadastrado!");
         this.showPopUp();
         this.getLotes();
       })
     } else {
-      this.registroEntradaService.showMessage("Lote ou Usuário inexistente")
+      this.facadeService.showMessage("registroEntrada","Lote ou Usuário inexistente")
     }
 
   }

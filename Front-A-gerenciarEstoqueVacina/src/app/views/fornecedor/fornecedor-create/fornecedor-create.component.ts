@@ -3,7 +3,7 @@ import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Fornecedor } from 'src/app/model/fornecedor.model';
 import { Usuario } from 'src/app/model/usuario.model';
-import { FornecedorService } from 'src/app/service/fornecedor.service';
+import { FacadeService } from 'src/app/service/facade.service';
 import { LoginPublisher } from "../../../service/login-publisher.service";
 
 @Component({
@@ -26,7 +26,7 @@ export class FornecedorCreateComponent implements OnInit {
   loaded: boolean = false;
   usuarioLogado: Usuario = null;
 
-  constructor(private fornecedorService: FornecedorService, private router: Router, private loginPublisher: LoginPublisher) { }
+  constructor(private facadeService: FacadeService, private router: Router, private loginPublisher: LoginPublisher) { }
 
   ngOnInit(): void {
     this.loginPublisher.addSubscriber(this);
@@ -52,7 +52,7 @@ export class FornecedorCreateComponent implements OnInit {
 
   async getFornecedores() {
 
-    this.fornecedorService.read().subscribe((fornecedores: Fornecedor[]) => {
+    this.facadeService.read("fornecedor").subscribe((fornecedores: Fornecedor[]) => {
       this.fornecedores = fornecedores;
       this.filterFornecedores = fornecedores;
     });
@@ -65,16 +65,16 @@ export class FornecedorCreateComponent implements OnInit {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
 
-        this.fornecedorService.create(this.fornecedor).subscribe(()=>{
-          this.fornecedorService.showMessage("Fornecedor Cadastrado!");
+        this.facadeService.create("fornecedor",this.fornecedor).subscribe(()=>{
+          this.facadeService.showMessage("fornecedor","Fornecedor Cadastrado!");
           this.showPopUp();
           this.getFornecedores();
         })
       } else {
-        this.fornecedorService.showMessage("Preencha todos os campos!");
+        this.facadeService.showMessage("fornecedor","Preencha todos os campos!");
       }
     }else{
-      this.fornecedorService.showMessage("Você não Possui Privilégios!");
+      this.facadeService.showMessage("fornecedor","Você não Possui Privilégios!");
     }
   }
 

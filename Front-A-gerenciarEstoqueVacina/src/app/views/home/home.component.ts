@@ -21,7 +21,5 @@ export class HomeComponent implements OnInit {
 
   updateSubscriber(usuarioLogado: Usuario) {
     this.usuarioLogado = usuarioLogado;
-    if(!usuarioLogado)
-      this.router.navigate(['login']);
   }
 }

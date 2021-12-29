@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from "../../../model/usuario.model";
-import { UsuarioService } from "../../../service/usuario.service";
 import { Router } from "@angular/router";
 import { LoginPublisher } from "../../../service/login-publisher.service";
+import { FacadeService } from 'src/app/service/facade.service';
 
 @Component({
   selector: 'app-usuario-create',
@@ -21,7 +21,7 @@ export class UsuarioCreateComponent implements OnInit {
   usuarioLogado: Usuario = null;
   loaded: boolean = false;
 
-  constructor(private usuarioService: UsuarioService, private router: Router, private loginPublisher: LoginPublisher) { }
+  constructor(private facadeService: FacadeService, private router: Router, private loginPublisher: LoginPublisher) { }
 
   ngOnInit(): void {
     this.loginPublisher.addSubscriber(this);
@@ -42,12 +42,12 @@ export class UsuarioCreateComponent implements OnInit {
 
   createUser():void{
     if (this.usuarioLogado !== null && this.usuarioLogado.isAdmin){
-      this.usuarioService.create(this.usuario).subscribe(()=>{
-        this.usuarioService.showMessage("Usuário Cadastrado!");
+      this.facadeService.create("usuario",this.usuario).subscribe(()=>{
+        this.facadeService.showMessage("usuario","Usuário Cadastrado!");
         window.location.reload();
       })
     } else
-      this.usuarioService.showMessage("Você não Possui Privilégios!")
+      this.facadeService.showMessage("usuario","Você não Possui Privilégios!")
   }
 
   cancelCadastro():void{

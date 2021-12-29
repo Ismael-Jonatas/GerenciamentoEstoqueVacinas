@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistroSaida } from "../../../model/registroSaida";
 import { Lote } from "../../../model/lote.model";
-import { LoteService } from "../../../service/lote.service";
 import { Router } from "@angular/router";
 import { Usuario } from "../../../model/usuario.model";
-import { UsuarioService } from "../../../service/usuario.service";
-import { RegistroDeSaidaService } from "../../../service/registro-de-saida.service";
 import { MatButton } from "@angular/material/button";
 import { LoginPublisher } from "../../../service/login-publisher.service";
+import { FacadeService } from 'src/app/service/facade.service';
 
 @Component({
   selector: 'app-registro-saida',
@@ -34,7 +32,7 @@ export class RegistroSaidaComponent implements OnInit {
   usuarioLogado: Usuario = null;
   loaded: boolean = false;
 
-  constructor(private loginPublisher: LoginPublisher, private loteService: LoteService, private usuarioService: UsuarioService, private registroSaidaService: RegistroDeSaidaService, private router: Router) { }
+  constructor(private loginPublisher: LoginPublisher, private facadeService: FacadeService, private router: Router) { }
 
   ngOnInit(): void {
     this.loginPublisher.addSubscriber(this);
@@ -62,7 +60,7 @@ export class RegistroSaidaComponent implements OnInit {
 
   async getLotes() {
 
-    this.loteService.read().subscribe((lotes: Lote[]) => {
+    this.facadeService.read("lote").subscribe((lotes: Lote[]) => {
       this.lotes = lotes;
     });
 
@@ -70,7 +68,7 @@ export class RegistroSaidaComponent implements OnInit {
 
   async getUsuarios() {
 
-    this.usuarioService.read().subscribe((usuarios: Usuario[]) => {
+    this.facadeService.read("usuario").subscribe((usuarios: Usuario[]) => {
       this.usuarios = usuarios;
     });
 
@@ -78,7 +76,7 @@ export class RegistroSaidaComponent implements OnInit {
 
   async getRegistrosSaidas() {
 
-    this.registroSaidaService.read().subscribe((registroSaidas: RegistroSaida[]) => {
+    this.facadeService.read("registroSaida").subscribe((registroSaidas: RegistroSaida[]) => {
       this.registroSaidas = registroSaidas;
       this.filterRegistroSaida = registroSaidas;
     });
@@ -92,16 +90,16 @@ export class RegistroSaidaComponent implements OnInit {
         buttonSalvar.disabled = true;
         buttonCancelar.disabled = true;
 
-        this.registroSaidaService.create(this.registroSaida).subscribe(()=>{
-          this.registroSaidaService.showMessage("Registro Cadastrado!");
+        this.facadeService.create("registroSaida",this.registroSaida).subscribe(()=>{
+          this.facadeService.showMessage("registroSaida","Registro Cadastrado!");
           this.showPopUp();
           this.getRegistrosSaidas();
         })
       } else {
-        this.registroSaidaService.showMessage("Preencha todos os campos!")
+        this.facadeService.showMessage("registroSaida","Preencha todos os campos!")
       }
     } else {
-      this.registroSaidaService.showMessage("Você não Possui Privilégios!")
+      this.facadeService.showMessage("registroSaida","Você não Possui Privilégios!")
     }
   }
 
