@@ -1,24 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {RegistroEntrada} from "../model/registroEntrada";
-import {Observable} from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { RegistroEntrada } from "../model/registroEntrada";
+import { Observable } from "rxjs";
 import { ToListagemDeRegistroEntrada } from "../model/ToListagemDeRegistroEntrada";
+import { AbstractRegistroService } from './abstract-registro.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegistroEntradaService {
+// Template Method
+export class RegistroEntradaService extends AbstractRegistroService {
 
   baseUrl = "https://gerenciarvacina.herokuapp.com/registro-de-entrada"
   baseUrl2 = "https://gerenciarvacina.herokuapp.com/registros-de-entradas"
 
-  constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
-
-  showMessage(msg:string):void{
-    this.snackBar.open(msg,'X', {duration:3000,
-      horizontalPosition:"right",
-      verticalPosition:"top"})
+  constructor(public snackbar: MatSnackBar, private http: HttpClient) {
+    super(snackbar);
   }
 
   create(regristroEntrada: ToListagemDeRegistroEntrada): Observable<RegistroEntrada>{
